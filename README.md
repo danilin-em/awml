@@ -1,5 +1,7 @@
 # Awesome WM
 
+![Screenshot Main](./doc/screenshot-main.png)
+
 ## Development
 
 ### Debug
