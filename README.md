@@ -2,6 +2,8 @@
 
 ![Screenshot Main](./doc/screenshot-main.png)
 
+[Origin](https://github.com/lcpz/awesome-copycats)
+
 ## Development
 
 ### Debug
