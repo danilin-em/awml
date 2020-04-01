@@ -410,6 +410,7 @@ awful.rules.rules = {
                 "Blueman-manager",
                 "emustudio-main-Main",
                 "gcr-prompter", "Gcr-prompter",
+                "gnome-calculator", "Gnome-calculator",
             }, 
             name = { 
                 "Picture in picture",
