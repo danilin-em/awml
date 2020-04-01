@@ -451,6 +451,13 @@ awful.rules.rules = {
             awful.placement.centered(c,nil)
         end
     },
+    -- "Xephyr", "Xephyr"
+    { rule_any = { class = { "Xephyr", "Xephyr" }, },
+        properties = {
+            floating = false,
+            maximized = true,
+        },
+    },
     -- Zenity
     { rule_any = { class = { "zenity", "Zenity" }, },
         properties = {
