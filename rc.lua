@@ -70,7 +70,7 @@ local browser      = os.getenv("BROWSER") or "firefox"
 local scrlocker    = "dm-tool lock"
 
 awful.util.terminal = terminal
-awful.util.tagnames = { "1", "2", "3", "4", "5" }
+awful.util.tagnames = { "1", "2", "3", "4" }
 awful.layout.layouts = {
     awful.layout.suit.max,
     awful.layout.suit.fair,
