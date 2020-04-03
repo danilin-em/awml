@@ -77,8 +77,6 @@ theme.titlebar_sticky_button_normal_active      = theme.dir .. "/icons/titlebar/
 theme.titlebar_sticky_button_normal_inactive    = theme.dir .. "/icons/titlebar/sticky_normal_inactive.png"
 -- }}
 
-local markup = lain.util.markup
-
 -- Separators
 local spr = wibox.widget.textbox(' ')
 
