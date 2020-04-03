@@ -37,6 +37,7 @@ init = function ( theme, panel )
         border_width = 0,
         bg = theme.bg_normal,
         colors = {'#ffffff'},
+        start_angle = 0.5 * math.pi,
         visible = false,
         widget = wibox.container.arcchart,
     }
