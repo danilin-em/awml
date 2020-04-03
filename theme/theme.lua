@@ -77,8 +77,6 @@ theme.titlebar_sticky_button_normal_active      = theme.dir .. "/icons/titlebar/
 theme.titlebar_sticky_button_normal_inactive    = theme.dir .. "/icons/titlebar/sticky_normal_inactive.png"
 
 theme.widget_ac                                 = theme.dir .. "/icons/widget/ac.png"
-theme.widget_net                                = theme.dir .. "/icons/widget/net.png"
-theme.widget_net_wired                          = theme.dir .. "/icons/widget/net_wired.png"
 -- }}
 
 local markup = lain.util.markup
@@ -100,34 +98,6 @@ theme.cal = lain.widget.cal({
         bg   = theme.bg_normal
     }
 })
-
--- Net
-local neticon = wibox.widget.imagebox(theme.widget_net)
-local net = lain.widget.net {
-    notify = "off",
-    wifi_state = "on",
-    eth_state = "on",
-    settings = function()
-        local eth0 = net_now.devices.eth0
-        if eth0 then
-            if eth0.ethernet then
-                eth_icon:set_image(theme.widget_net_wired)
-            else
-                eth_icon:set_image()
-            end
-        end
-
-        local wlan0 = net_now.devices.wlp2s0
-        if wlan0 then
-            if wlan0.wifi then
-                local signal = wlan0.signal
-                widget:set_markup(markup.font(theme.font, string.format("%03d", signal) .. " dBm"))
-            else
-                widget:set_markup(markup.font(theme.font, "X"))
-            end
-        end
-    end
-}
 
 -- Separators
 local spr = wibox.widget.textbox(' ')
@@ -184,8 +154,7 @@ function theme.at_screen_connect(s)
             require('theme.widgets.volume.volume')(theme),
             require('theme.widgets.mem.mem')(theme),
             require('theme.widgets.battery.battery')(theme),
-            neticon,
-            net.widget,
+            require('theme.widgets.network.network')(theme),
             clock,
             s.mylayoutbox
         },
