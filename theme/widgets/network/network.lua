@@ -1,5 +1,6 @@
 -- network
 
+local awful = require("awful")
 local wibox = require("wibox")
 local lain = require("lain")
 local markup = lain.util.markup
@@ -8,6 +9,7 @@ local markup = lain.util.markup
 init = function ( theme )
     theme.widget_net        = theme.dir .. "/widgets/network/icons/net.png"
     theme.widget_net_wired  = theme.dir .. "/widgets/network/icons/net_wired.png"
+    local _value = ""
     local _icon = wibox.widget.imagebox(theme.widget_net)
     local _widget = wibox.widget {
         _icon,
@@ -21,6 +23,13 @@ init = function ( theme )
         start_angle = 0.5 * math.pi,
         visible = false,
         widget = wibox.container.arcchart,
+    }
+    awful.tooltip {
+        objects = { _widget },
+        align = "bottom_left",
+        timer_function = function()
+            return _value
+        end,
     }
     lain.widget.net {
         notify = "off",
@@ -37,6 +46,7 @@ init = function ( theme )
             local wlan0 = net_now.devices.wlp2s0
             if wlan0 then
                 if wlan0.wifi then
+                    _value = wlan0.signal .. " dBm"
                     _widget.value = 0 - wlan0.signal
                 end
             end

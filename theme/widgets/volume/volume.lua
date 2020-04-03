@@ -7,42 +7,56 @@ local markup = lain.util.markup
 
 init = function ( theme )
     theme.widget_vol      = theme.dir .. "/widgets/volume/icons/vol.png"
-    theme.widget_vol_low  = theme.dir .. "/widgets/volume/icons/vol_low.png"
     theme.widget_vol_mute = theme.dir .. "/widgets/volume/icons/vol_mute.png"
-    theme.widget_vol_no   = theme.dir .. "/widgets/volume/icons/vol_no.png"
-    local icon = wibox.widget.imagebox(theme.widget_vol)
+    local _value = {}
+    local _icon = wibox.widget.imagebox(theme.widget_vol)
+    local _widget = wibox.widget {
+        _icon,
+        value = 0,
+        min_value = 0,
+        max_value = 100,
+        thickness = 1,
+        border_width = 0,
+        bg = theme.bg_normal,
+        colors = {'#ffffff'},
+        start_angle = 0.5 * math.pi,
+        widget = wibox.container.arcchart,
+    }
     theme.volume = lain.widget.alsa({
         settings = function()
+            _value = volume_now
+            _widget.value = volume_now.level
             if volume_now.status == "off" then
-                icon:set_image(theme.widget_vol_mute)
-            elseif tonumber(volume_now.level) == 0 then
-                icon:set_image(theme.widget_vol_no)
-            elseif tonumber(volume_now.level) <= 50 then
-                icon:set_image(theme.widget_vol_low)
+                _icon:set_image(theme.widget_vol_mute)
+                _widget.colors = {'#DDDDFF'}
             else
-                icon:set_image(theme.widget_vol)
+                _icon:set_image(theme.widget_vol)
+                _widget.colors = {'#ffffff'}
             end
-            widget:set_markup(markup.font(theme.font, "" .. string.format("%03d", volume_now.level) .. "% "))
         end
     })
-    theme.volume.widget:buttons(awful.util.table.join(
+    awful.tooltip {
+        objects = { _widget },
+        align = "bottom_left",
+        timer_function = function()
+            return "Volume: " .. _value.status .. " " .. _value.level .. "%"
+        end,
+    }
+    _widget:buttons(awful.util.table.join(
         awful.button({}, 1, function ()
-             awful.util.spawn("amixer set Master 1+ toggle")
+             awful.util.spawn("amixer -D pulse set Master 1+ toggle")
              theme.volume.update()
         end),
         awful.button({}, 4, function ()
-            awful.util.spawn("amixer set Master 1%+")
+            awful.util.spawn("amixer -D pulse set Master 1%+")
             theme.volume.update()
         end),
         awful.button({}, 5, function ()
-            awful.util.spawn("amixer set Master 5%-")
+            awful.util.spawn("amixer -D pulse set Master 5%-")
             theme.volume.update()
         end)
     ))
-    return wibox.widget {
-        icon,
-        theme.volume.widget,
-        layout  = wibox.layout.align.horizontal
-    }
+    return _widget
 end
+
 return init

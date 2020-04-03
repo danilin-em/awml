@@ -7,7 +7,7 @@ local markup = lain.util.markup
 init = function ( theme )
     -- Textclock
     local _widget = awful.widget.watch(
-        "date +'%a %d %b %R'", 60,
+        "date +'%a %d %b (%m) %R'", 60,
         function(widget, stdout)
             widget:set_markup(" " .. markup.font(theme.font, stdout))
         end
@@ -22,7 +22,6 @@ init = function ( theme )
         }
     })
     return wibox.widget {
-        -- _icon,
         _widget,
         layout  = wibox.layout.align.horizontal
     }
