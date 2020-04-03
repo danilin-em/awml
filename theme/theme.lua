@@ -136,6 +136,7 @@ function theme.at_screen_connect(s)
             require('theme.widgets.battery.battery')(theme),
             require('theme.widgets.network.network')(theme),
             require('theme.widgets.clock.clock')(theme),
+            s.mylayoutbox
         },
     }
 end
