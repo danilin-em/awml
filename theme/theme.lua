@@ -202,14 +202,6 @@ local net = lain.widget.net {
     end
 }
 
--- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
-mykeyboardlayoutct = wibox.container.constraint(
-    mykeyboardlayout,
-    'min',
-    23
-)
-
 -- Separators
 local spr = wibox.widget.textbox(' ')
 
@@ -261,7 +253,7 @@ function theme.at_screen_connect(s)
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
             spr,
-            mykeyboardlayoutct,
+            require('theme.widgets.keyboardlayout.keyboardlayout'),
             volicon,
             theme.volume.widget,
             memicon,
