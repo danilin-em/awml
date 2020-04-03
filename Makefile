@@ -5,4 +5,4 @@ Xephyr:
 syntax:
 	awesome -k -c rc.lua
 rundev: syntax
-	DISPLAY=:1.0 awesome -c rc.lua
+	AWESOME_ROOT=$(shell pwd) DISPLAY=:1.0 awesome -c rc.lua

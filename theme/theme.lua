@@ -14,9 +14,11 @@ local dpi   = require("beautiful.xresources").apply_dpi
 local os = os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
+local AWESOME_ROOT = os.getenv("AWESOME_ROOT") or os.getenv("HOME") .. "/.config/awesome"
+
 local theme                                     = {}
-theme.dir                                       = os.getenv("PWD") .. "/theme"
-theme.wallpaper                                 = os.getenv("PWD") .. "/wallpaper.jpg"
+theme.dir                                       = AWESOME_ROOT .. "/theme"
+theme.wallpaper                                 = AWESOME_ROOT .. "/wallpaper.jpg"
 theme.font                                      = "Terminus 9"
 theme.fg_normal                                 = "#DDDDFF"
 theme.fg_focus                                  = "#ffffff"
@@ -131,7 +133,7 @@ function theme.at_screen_connect(s)
             require('theme.widgets.keyboardlayout.keyboardlayout')(theme),
             require('theme.widgets.volume.volume')(theme),
             require('theme.widgets.mem.mem')(theme),
-            require('theme.widgets.battery.battery')(theme),
+            require('theme.widgets.battery.battery')(theme, s.mywibox),
             require('theme.widgets.network.network')(theme),
             require('theme.widgets.clock.clock')(theme),
             s.mylayoutbox

@@ -6,6 +6,8 @@
 local awesome, client, mouse, screen, tag = awesome, client, mouse, screen, tag
 local ipairs, string, os, table, tostring, tonumber, type = ipairs, string, os, table, tostring, tonumber, type
 
+local AWESOME_ROOT = os.getenv("AWESOME_ROOT") or os.getenv("HOME") .. "/.config/awesome"
+
 local gears         = require("gears")
 local awful         = require("awful")
                       require("awful.autofocus")
@@ -139,7 +141,7 @@ lain.layout.cascade.tile.extra_padding = dpi(5)
 lain.layout.cascade.tile.nmaster       = 5
 lain.layout.cascade.tile.ncol          = 2
 
-beautiful.init(string.format("%s/theme/theme.lua", os.getenv("PWD")))
+beautiful.init(string.format("%s/theme/theme.lua", AWESOME_ROOT))
 -- }}}
 
 -- {{{ Menu
