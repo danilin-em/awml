@@ -130,7 +130,7 @@ function theme.at_screen_connect(s)
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
             spr,
-            require('theme.widgets.keyboardlayout.keyboardlayout'),
+            require('theme.widgets.keyboardlayout.keyboardlayout')(theme),
             require('theme.widgets.volume.volume')(theme),
             require('theme.widgets.mem.mem')(theme),
             require('theme.widgets.battery.battery')(theme),
