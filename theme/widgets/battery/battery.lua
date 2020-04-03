@@ -8,6 +8,7 @@ init = function ( theme )
     theme.widget_battery = theme.dir .. "/widgets/battery/icons/battery.png"
     theme.widget_battery_empty = theme.dir .. "/widgets/battery/icons/battery_empty.png"
     theme.widget_battery_low = theme.dir .. "/widgets/battery/icons/battery_low.png"
+    theme.widget_ac = theme.dir .. "/widgets/battery/icons/ac.png"
     local icon = wibox.widget.imagebox(theme.widget_battery)
     local widget = lain.widget.bat({
         notify = "off",

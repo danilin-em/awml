@@ -75,8 +75,6 @@ theme.titlebar_sticky_button_focus_active       = theme.dir .. "/icons/titlebar/
 theme.titlebar_sticky_button_focus_inactive     = theme.dir .. "/icons/titlebar/sticky_focus_inactive.png"
 theme.titlebar_sticky_button_normal_active      = theme.dir .. "/icons/titlebar/sticky_normal_active.png"
 theme.titlebar_sticky_button_normal_inactive    = theme.dir .. "/icons/titlebar/sticky_normal_inactive.png"
-
-theme.widget_ac                                 = theme.dir .. "/icons/widget/ac.png"
 -- }}
 
 local markup = lain.util.markup
