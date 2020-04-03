@@ -79,10 +79,6 @@ theme.titlebar_sticky_button_normal_inactive    = theme.dir .. "/icons/titlebar/
 theme.widget_ac                                 = theme.dir .. "/icons/widget/ac.png"
 theme.widget_net                                = theme.dir .. "/icons/widget/net.png"
 theme.widget_net_wired                          = theme.dir .. "/icons/widget/net_wired.png"
-theme.widget_vol                                = theme.dir .. "/icons/widget/vol.png"
-theme.widget_vol_low                            = theme.dir .. "/icons/widget/vol_low.png"
-theme.widget_vol_mute                           = theme.dir .. "/icons/widget/vol_mute.png"
-theme.widget_vol_no                             = theme.dir .. "/icons/widget/vol_no.png"
 -- }}
 
 local markup = lain.util.markup
@@ -104,38 +100,6 @@ theme.cal = lain.widget.cal({
         bg   = theme.bg_normal
     }
 })
-
--- ALSA volume
-local volicon = wibox.widget.imagebox(theme.widget_vol)
-theme.volume = lain.widget.alsa({
-    settings = function()
-        if volume_now.status == "off" then
-            volicon:set_image(theme.widget_vol_mute)
-        elseif tonumber(volume_now.level) == 0 then
-            volicon:set_image(theme.widget_vol_no)
-        elseif tonumber(volume_now.level) <= 50 then
-            volicon:set_image(theme.widget_vol_low)
-        else
-            volicon:set_image(theme.widget_vol)
-        end
-
-        widget:set_markup(markup.font(theme.font, "" .. string.format("%03d", volume_now.level) .. "% "))
-    end
-})
-theme.volume.widget:buttons(awful.util.table.join(
-    awful.button({}, 1, function ()
-         awful.util.spawn("amixer set Master 1+ toggle")
-         theme.volume.update()
-    end),
-    awful.button({}, 4, function ()
-        awful.util.spawn("amixer set Master 1%+")
-        theme.volume.update()
-    end),
-    awful.button({}, 5, function ()
-        awful.util.spawn("amixer set Master 5%-")
-        theme.volume.update()
-    end)
-))
 
 -- Net
 local neticon = wibox.widget.imagebox(theme.widget_net)
@@ -217,8 +181,7 @@ function theme.at_screen_connect(s)
             wibox.widget.systray(),
             spr,
             require('theme.widgets.keyboardlayout.keyboardlayout'),
-            volicon,
-            theme.volume.widget,
+            require('theme.widgets.volume.volume')(theme),
             require('theme.widgets.mem.mem')(theme),
             require('theme.widgets.battery.battery')(theme),
             neticon,
