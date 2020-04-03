@@ -77,9 +77,6 @@ theme.titlebar_sticky_button_normal_active      = theme.dir .. "/icons/titlebar/
 theme.titlebar_sticky_button_normal_inactive    = theme.dir .. "/icons/titlebar/sticky_normal_inactive.png"
 
 theme.widget_ac                                 = theme.dir .. "/icons/widget/ac.png"
-theme.widget_battery                            = theme.dir .. "/icons/widget/battery.png"
-theme.widget_battery_empty                      = theme.dir .. "/icons/widget/battery_empty.png"
-theme.widget_battery_low                        = theme.dir .. "/icons/widget/battery_low.png"
 theme.widget_net                                = theme.dir .. "/icons/widget/net.png"
 theme.widget_net_wired                          = theme.dir .. "/icons/widget/net_wired.png"
 theme.widget_vol                                = theme.dir .. "/icons/widget/vol.png"
@@ -106,31 +103,6 @@ theme.cal = lain.widget.cal({
         fg   = theme.fg_normal,
         bg   = theme.bg_normal
     }
-})
-
--- Battery
-local baticon = wibox.widget.imagebox(theme.widget_battery)
-local bat = lain.widget.bat({
-    notify = "off",
-    settings = function()
-        if bat_now.status and bat_now.status ~= "N/A" then
-            if bat_now.ac_status == 1 then
-                baticon:set_image(theme.widget_ac)
-            elseif tonumber(bat_now.perc) == 100 then
-                baticon:set_image(theme.widget_ac)
-            elseif not bat_now.perc and tonumber(bat_now.perc) <= 5 then
-                baticon:set_image(theme.widget_battery_empty)
-            elseif not bat_now.perc and tonumber(bat_now.perc) <= 15 then
-                baticon:set_image(theme.widget_battery_low)
-            else
-                baticon:set_image(theme.widget_battery)
-            end
-            widget:set_markup(markup.font(theme.font, " " .. string.format("%02d", bat_now.perc) .. "% "))
-        else
-            widget:set_markup(markup.font(theme.font, " AC "))
-            baticon:set_image(theme.widget_ac)
-        end
-    end
 })
 
 -- ALSA volume
@@ -248,8 +220,7 @@ function theme.at_screen_connect(s)
             volicon,
             theme.volume.widget,
             require('theme.widgets.mem.mem')(theme),
-            baticon,
-            bat.widget,
+            require('theme.widgets.battery.battery')(theme),
             neticon,
             net.widget,
             clock,
