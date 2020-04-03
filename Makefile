@@ -6,3 +6,5 @@ syntax:
 	awesome -k -c rc.lua
 rundev: syntax
 	AWESOME_ROOT=$(shell pwd) DISPLAY=:1.0 awesome -c rc.lua
+replace: syntax
+	AWESOME_ROOT=$(shell pwd) awesome --replace -c rc.lua
