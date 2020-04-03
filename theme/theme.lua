@@ -81,24 +81,6 @@ theme.widget_ac                                 = theme.dir .. "/icons/widget/ac
 
 local markup = lain.util.markup
 
--- Textclock
-local clock = awful.widget.watch(
-    "date +'%a %d %b %R'", 60,
-    function(widget, stdout)
-        widget:set_markup(" " .. markup.font(theme.font, stdout))
-    end
-)
-
--- Calendar
-theme.cal = lain.widget.cal({
-    attach_to = { clock },
-    notification_preset = {
-        font = "Terminus 10",
-        fg   = theme.fg_normal,
-        bg   = theme.bg_normal
-    }
-})
-
 -- Separators
 local spr = wibox.widget.textbox(' ')
 
@@ -155,8 +137,7 @@ function theme.at_screen_connect(s)
             require('theme.widgets.mem.mem')(theme),
             require('theme.widgets.battery.battery')(theme),
             require('theme.widgets.network.network')(theme),
-            clock,
-            s.mylayoutbox
+            require('theme.widgets.clock.clock')(theme),
         },
     }
 end
