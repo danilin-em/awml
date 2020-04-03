@@ -80,7 +80,6 @@ theme.widget_ac                                 = theme.dir .. "/icons/widget/ac
 theme.widget_battery                            = theme.dir .. "/icons/widget/battery.png"
 theme.widget_battery_empty                      = theme.dir .. "/icons/widget/battery_empty.png"
 theme.widget_battery_low                        = theme.dir .. "/icons/widget/battery_low.png"
-theme.widget_mem                                = theme.dir .. "/icons/widget/mem.png"
 theme.widget_net                                = theme.dir .. "/icons/widget/net.png"
 theme.widget_net_wired                          = theme.dir .. "/icons/widget/net_wired.png"
 theme.widget_vol                                = theme.dir .. "/icons/widget/vol.png"
@@ -107,14 +106,6 @@ theme.cal = lain.widget.cal({
         fg   = theme.fg_normal,
         bg   = theme.bg_normal
     }
-})
-
--- MEM
-local memicon = wibox.widget.imagebox(theme.widget_mem)
-local mem = lain.widget.mem({
-    settings = function()
-        widget:set_markup(markup.font(theme.font, " " .. string.format("%03d", mem_now.perc) .. "% "))
-    end
 })
 
 -- Battery
@@ -256,8 +247,7 @@ function theme.at_screen_connect(s)
             require('theme.widgets.keyboardlayout.keyboardlayout'),
             volicon,
             theme.volume.widget,
-            memicon,
-            mem.widget,
+            require('theme.widgets.mem.mem')(theme),
             baticon,
             bat.widget,
             neticon,
