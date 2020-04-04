@@ -7,10 +7,10 @@ local markup = lain.util.markup
 
 
 init = function ( theme )
-    theme.widget_net        = theme.dir .. "/widgets/network/icons/net.png"
-    theme.widget_net_wired  = theme.dir .. "/widgets/network/icons/net_wired.png"
+    theme.widget_net_wifi_off        = theme.dir .. "/widgets/network/icons/signal_wifi_off.png"
+    theme.widget_net_wifi_full  = theme.dir .. "/widgets/network/icons/signal_wifi_full.png"
     local _value = ""
-    local _icon = wibox.widget.imagebox(theme.widget_net)
+    local _icon = wibox.widget.imagebox(theme.widget_net_wifi_off)
     local _widget = wibox.widget {
         _icon,
         value = 30,
@@ -40,7 +40,7 @@ init = function ( theme )
             local eth0 = net_now.devices.eth0
             if eth0 then
                 if eth0.ethernet then
-                    _icon:set_image(theme.widget_net_wired)
+                    -- TODO: Wired icon
                 end
             end
             local wlan0 = net_now.devices.wlp2s0
@@ -48,6 +48,7 @@ init = function ( theme )
                 if wlan0.wifi then
                     _value = wlan0.signal .. " dBm"
                     _widget.value = 0 - wlan0.signal
+                    _icon:set_image(theme.widget_net_wifi_full)
                 end
             end
         end
