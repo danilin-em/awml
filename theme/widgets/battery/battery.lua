@@ -22,10 +22,12 @@ local color = function ( perc )
 end
 
 init = function ( theme, panel )
-    theme.widget_battery = theme.dir .. "/widgets/battery/icons/battery.png"
-    theme.widget_ac = theme.dir .. "/widgets/battery/icons/ac.png"
+    theme.widget_battery_alert = theme.dir .. "/widgets/battery/icons/battery_alert.png"
+    theme.widget_battery_charging_full = theme.dir .. "/widgets/battery/icons/battery_charging_full.png"
+    theme.widget_battery_std = theme.dir .. "/widgets/battery/icons/battery_std.png"
+    theme.widget_battery_unknown = theme.dir .. "/widgets/battery/icons/battery_unknown.png"
     local _value = {}
-    local _icon = wibox.widget.imagebox(theme.widget_battery)
+    local _icon = wibox.widget.imagebox(theme.widget_battery_unknown)
     local _battery = wibox.widget {
         _icon,
         value = 0,
@@ -70,13 +72,15 @@ init = function ( theme, panel )
         timeout = 5,
         settings = function()
             if bat_now.status and bat_now.status ~= "N/A" then
-                _icon:set_image(theme.widget_battery)
+                _icon:set_image(theme.widget_battery_std)
                 _value = bat_now
                 _battery.value = bat_now.perc
                 _battery.colors = {color(bat_now.perc)}
                 if bat_now.ac_status == 1 then
-                    _icon:set_image(theme.widget_ac)
+                    _icon:set_image(theme.widget_battery_charging_full)
                     _battery.colors = {'#ffffff'}
+                elseif tonumber(bat_now.perc) <= 25 then
+                    _icon:set_image(theme.widget_battery_alert)
                 end
             end
         end
