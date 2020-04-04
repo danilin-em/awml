@@ -136,9 +136,9 @@ function theme.at_screen_connect(s)
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
+            spacing = dpi(5),
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
-            spr,
             require('theme.widgets.keyboardlayout.keyboardlayout')(theme),
             require('theme.widgets.volume.volume')(theme),
             require('theme.widgets.mem.mem')(theme),
