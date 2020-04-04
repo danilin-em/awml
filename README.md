@@ -1,6 +1,6 @@
 # Awesome WM
 
-![Screenshot Main](./doc/screenshot-main.png)
+![Screenshot Main](./doc/2020-04-04_22-01.png)
 
 [Origin](https://github.com/lcpz/awesome-copycats)
 
