@@ -116,7 +116,7 @@ function theme.at_screen_connect(s)
         filter   = awful.widget.tasklist.filter.currenttags,
         buttons  = awful.util.tasklist_buttons,
         layout   = {
-            max_widget_size = 350,
+            max_widget_size = dpi(350),
             layout =  wibox.layout.flex.horizontal,
         }
     }
