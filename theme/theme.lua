@@ -11,6 +11,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
 
+local awesome, client, mouse, screen, tag = awesome, client, mouse, screen, tag
 local os = os
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
@@ -118,6 +119,39 @@ function theme.at_screen_connect(s)
         layout   = {
             max_widget_size = dpi(350),
             layout =  wibox.layout.flex.horizontal,
+        },
+        widget_template = {
+            {
+                {
+                    {
+                        {
+                            id     = 'icon_role',
+                            widget = wibox.widget.imagebox,
+                        },
+                        margins = 2,
+                        widget  = wibox.container.margin,
+                    },
+                    {
+                        id     = 'text_role',
+                        widget = wibox.widget.textbox,
+                    },
+                    {
+                        id     = 'tasklist_window_buttons',
+                        layout = wibox.layout.flex.horizontal,
+                    },
+                    layout = wibox.layout.align.horizontal,
+                },
+                left = dpi(2),
+                right = dpi(2),
+                widget = wibox.container.margin
+            },
+            id     = 'background_role',
+            widget = wibox.container.background,
+            create_callback = function(self, c, index, objects) --luacheck: no unused
+                c.tasklist_window_buttons = self:get_children_by_id('tasklist_window_buttons')[1]
+                c.tasklist_window_buttons:insert(1, awful.titlebar.widget.floatingbutton(c))
+                c.tasklist_window_buttons:insert(2, awful.titlebar.widget.closebutton(c))
+            end,
         }
     }
 
