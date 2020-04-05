@@ -15,7 +15,7 @@ local color = function ( perc )
         hex = '#FFFF00'
     elseif tonumber(perc) <= 45 then
         hex = '#7FFF00'
-    elseif tonumber(perc) <= 50 then
+    elseif tonumber(perc) <= 75 then
         hex = '#00FF00'
     end
     return hex
@@ -36,6 +36,8 @@ init = function ( theme, panel )
         thickness = 1,
         border_width = 0,
         bg = theme.bg_normal,
+        border_width = 1,
+        border_color = theme.bg_normal,
         colors = {'#ffffff'},
         start_angle = 0.5 * math.pi,
         widget = wibox.container.arcchart,
@@ -48,6 +50,7 @@ init = function ( theme, panel )
         thickness = 1,
         border_width = 0,
         bg = theme.bg_normal,
+        border_color = theme.bg_normal,
         colors = {'#ffffff'},
         start_angle = 0.5 * math.pi,
         widget = wibox.container.arcchart,
