@@ -98,6 +98,7 @@ local function naughty_destroy_callback(reason)
     if action then
       spawn(action, false)
       state.index = nil
+      awesome.restart()
     end
   end
 end
