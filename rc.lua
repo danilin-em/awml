@@ -146,6 +146,7 @@ beautiful.init(string.format("%s/theme/theme.lua", AWESOME_ROOT))
 -- }}}
 
 -- {{{ Menu
+awful.util.mymainmenu = nil
 local myawesomemenu = {
     { "hotkeys", function() return false, hotkeys_popup.show_help end },
     { "manual", terminal .. " -e man awesome" },
@@ -153,17 +154,22 @@ local myawesomemenu = {
     { "restart", awesome.restart },
     { "quit", function() awesome.quit() end }
 }
-awful.util.mymainmenu = freedesktop.menu.build({
-    icon_size = beautiful.menu_height or dpi(16),
-    before = {
-        { "Awesome", myawesomemenu, beautiful.awesome_icon },
-        -- other triads can be put here
-    },
-    after = {
-        { "Open terminal", terminal },
-        -- other triads can be put here
-    }
-})
+local build_mymainmenu = function ( )
+    if not awful.util.mymainmenu then
+        awful.util.mymainmenu = freedesktop.menu.build({
+            icon_size = beautiful.menu_height or dpi(16),
+            before = {
+                { "Awesome", myawesomemenu, beautiful.awesome_icon },
+                -- other triads can be put here
+            },
+            after = {
+                { "Open terminal", terminal },
+                -- other triads can be put here
+            }
+        })
+    end
+    return awful.util.mymainmenu
+end
 
 -- {{{ Screen
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
@@ -196,8 +202,8 @@ awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) 
 
 -- {{{ Mouse bindings
 root.buttons(my_table.join(
-    awful.button({ }, 1, function () awful.util.mymainmenu:hide() end),
-    awful.button({ }, 3, function () awful.util.mymainmenu:toggle() end),
+    awful.button({ }, 1, function () build_mymainmenu():hide() end),
+    awful.button({ }, 3, function () build_mymainmenu():toggle() end),
     awful.button({ }, 4, awful.tag.viewnext),
     awful.button({ }, 5, awful.tag.viewprev)
 ))
@@ -208,7 +214,7 @@ globalkeys = my_table.join(
     -- {{{ Awesome Keys group 
     awful.key({ modkey }, "s", hotkeys_popup.show_help,
         {description = "show help", group = "awesome"}),
-    awful.key({ modkey }, "w", function () awful.util.mymainmenu:show() end,
+    awful.key({ modkey }, "w", function () build_mymainmenu():show() end,
         {description = "show main menu", group = "awesome"}),
     awful.key({ modkey, "Shift" }, "r", awesome.restart,
         {description = "reload awesome", group = "awesome"}),
