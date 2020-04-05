@@ -20,6 +20,7 @@ local hotkeys_popup = require("awful.hotkeys_popup").widget
                       require("awful.hotkeys_popup.keys")
 local my_table      = awful.util.table or gears.table -- 4.{0,1} compatibility
 local dpi           = require("beautiful.xresources").apply_dpi
+local xrandr        = require("xrandr")
 -- }}}
 
 -- {{{ Error handling
@@ -211,6 +212,8 @@ globalkeys = my_table.join(
         {description = "show main menu", group = "awesome"}),
     awful.key({ modkey, "Shift" }, "r", awesome.restart,
         {description = "reload awesome", group = "awesome"}),
+    awful.key({ modkey, "Shift" }, "x", function() xrandr.xrandr() end, 
+        {description = "Setup xrandr", group = "awesome"}),
     -- }}}
     
     -- {{{ Hotkeys Keys group
