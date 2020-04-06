@@ -272,7 +272,22 @@ globalkeys = my_table.join(
     awful.key({ modkey }, "Up", function () lain.util.tag_view_nonempty(-1) end,
         {description = "view  previous nonempty", group = "tag"}),
     awful.key({ modkey }, "Down", function () lain.util.tag_view_nonempty(1) end,
-        {description = "view  previous nonempty", group = "tag"})
+        {description = "view  previous nonempty", group = "tag"}),
+    -- }}}
+
+    -- {{{ Screen Keys group
+    awful.key({ modkey }, "Left", function ()
+        awful.screen.focus_bydirection("left")
+    end, {description = "focus previous screen", group = "screen"}),
+    awful.key({ modkey }, "Right", function ()
+        awful.screen.focus_bydirection("right")
+    end, {description = "focus next", group = "screen"}),
+    awful.key({ modkey, "Shift" }, "Left", function ()
+        client.focus:move_to_screen (client.focus.screen.index-1) 
+    end, {description = "move client to previous screen", group = "screen"}),
+    awful.key({ modkey, "Shift" }, "Right", function ()
+        client.focus:move_to_screen (client.focus.screen.index+1) 
+    end, {description = "move client to next", group = "screen"})
     -- }}}
 )
 
@@ -318,7 +333,6 @@ for i = 1, 9 do
         descr_view = {description = "view tag #", group = "tag"}
         descr_toggle = {description = "toggle tag #", group = "tag"}
         descr_move = {description = "move focused client to tag #", group = "tag"}
-        descr_toggle_focus = {description = "toggle focused client on tag #", group = "tag"}
     end
     globalkeys = my_table.join(globalkeys,
         -- View tag only.
@@ -351,18 +365,7 @@ for i = 1, 9 do
                           end
                      end
                   end,
-                  descr_move),
-        -- Toggle tag on focused client.
-        awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
-                  function ()
-                      if client.focus then
-                          local tag = client.focus.screen.tags[i]
-                          if tag then
-                              client.focus:toggle_tag(tag)
-                          end
-                      end
-                  end,
-                  descr_toggle_focus)
+                  descr_move)
     )
 end
 
