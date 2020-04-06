@@ -163,7 +163,7 @@ function theme.at_screen_connect(s)
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            require('theme.widgets.menu.menu')(theme),
+            require('theme.widgets.menu')(theme),
             s.mytaglist,
             s.mypromptbox,
             spr,
@@ -173,12 +173,12 @@ function theme.at_screen_connect(s)
             spacing = dpi(5),
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
-            require('theme.widgets.keyboardlayout.keyboardlayout')(theme),
-            require('theme.widgets.volume.volume')(theme),
-            require('theme.widgets.mem.mem')(theme),
-            require('theme.widgets.battery.battery')(theme, s.mywibox),
-            require('theme.widgets.network.network')(theme),
-            require('theme.widgets.clock.clock')(theme),
+            require('theme.widgets.keyboardlayout')(theme),
+            require('theme.widgets.volume')(theme),
+            require('theme.widgets.mem')(theme),
+            require('theme.widgets.battery')(theme, s.mywibox),
+            require('theme.widgets.network')(theme),
+            require('theme.widgets.clock')(theme),
             s.mylayoutbox
         },
     }
