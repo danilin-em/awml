@@ -8,11 +8,11 @@ local _keyboardlayout = awful.widget.keyboardlayout.new()
 local _icon = wibox.widget.imagebox(nil)
 
 local update_icon = function ( theme )
-    local i = awesome.xkb_get_layout_group() -- TODO: Fix xkb layout name getter
-    if _keyboardlayout._layout[i] == "us" then
-        _icon:set_image(theme.widget_keyboardlayout_ru)
-    else
+    local i = awesome.xkb_get_layout_group()
+    if _keyboardlayout._layout[i + 1] == "us" then
         _icon:set_image(theme.widget_keyboardlayout_en)
+    elseif _keyboardlayout._layout[i + 1] == "ru" then
+        _icon:set_image(theme.widget_keyboardlayout_ru)
     end
 end
 
