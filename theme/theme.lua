@@ -55,7 +55,7 @@ theme.layout_tile                               = theme.dir .. "/icons/layout/ti
 theme.layout_tilebottom                         = theme.dir .. "/icons/layout/tilebottom.png"
 theme.layout_tileleft                           = theme.dir .. "/icons/layout/tileleft.png"
 theme.layout_tiletop                            = theme.dir .. "/icons/layout/tiletop.png"
-theme.layout_fullscreen                         = theme.dir .. "/icons/layout/fullscreen.png" -- TODO: Add icon: /icons/layout/fullscreen.png
+theme.layout_fullscreen                         = theme.dir .. "/icons/layout/fullscreen.png"
 
 theme.taglist_squares_sel                       = theme.dir .. "/icons/taglist/square_sel.png"
 theme.taglist_squares_unsel                     = theme.dir .. "/icons/taglist/square_unsel.png"
