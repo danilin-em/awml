@@ -57,6 +57,7 @@ local function run_once(cmd_arr)
 end
 
 run_once({
+    "setxkbmap -layout us,ru -option grp:win_space_toggle",
     -- No Apps
 })
 -- }}}
