@@ -77,7 +77,7 @@ init = function ( theme )
             text = "Shutdown imminent",
             timeout = 15,
             fg = theme.fg_normal,
-            bg = theme.bg_warn
+            bg = theme.bg_critical
         },
         settings = function()
             if bat_now.status and bat_now.status ~= "N/A" then
