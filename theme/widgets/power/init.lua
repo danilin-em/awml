@@ -56,7 +56,7 @@ init = function ( theme, panel )
                     forced_height = 36,
                     buttons = awful.util.table.join(
                         awful.button({}, 1, function ( )
-                            awful.spawn.with_shell("systemctl restart")
+                            awful.spawn.with_shell("systemctl reboot")
                         end)
                     ),
                     widget  = wibox.container.margin
