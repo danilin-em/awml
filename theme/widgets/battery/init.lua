@@ -6,7 +6,7 @@ local lain = require("lain")
 local markup = lain.util.markup
 
 local color = function ( perc )
-    local hex = '#ffffff'
+    local hex = '#FFFFFF'
     if tonumber(perc) <= 10 then
         hex = '#FF0000'
     elseif tonumber(perc) <= 25 then
@@ -26,6 +26,8 @@ init = function ( theme, panel )
     theme.widget_battery_charging_full = theme.dir .. "/widgets/battery/icons/battery_charging_full.png"
     theme.widget_battery_std = theme.dir .. "/widgets/battery/icons/battery_std.png"
     theme.widget_battery_unknown = theme.dir .. "/widgets/battery/icons/battery_unknown.png"
+    local _perc_crit = 5
+    local _perc_low = 15
     local _value = {}
     local _icon = wibox.widget.imagebox(theme.widget_battery_unknown)
     local _battery = wibox.widget {
@@ -38,7 +40,7 @@ init = function ( theme, panel )
         bg = theme.bg_normal,
         border_width = 1,
         border_color = theme.bg_normal,
-        colors = {'#ffffff'},
+        colors = {theme._color_white},
         start_angle = 0.5 * math.pi,
         widget = wibox.container.arcchart,
     }
@@ -51,7 +53,7 @@ init = function ( theme, panel )
         border_width = 0,
         bg = theme.bg_normal,
         border_color = theme.bg_normal,
-        colors = {'#ffffff'},
+        colors = {theme._color_white},
         start_angle = 0.5 * math.pi,
         widget = wibox.container.arcchart,
     }
@@ -73,6 +75,29 @@ init = function ( theme, panel )
     lain.widget.bat({
         notify = "off",
         timeout = 5,
+        n_perc = {_perc_crit, _perc_low},
+        notify = "on",
+        bat_notification_charged_preset = {
+            title   = "Battery full",
+            text    = "You can unplug the cable",
+            timeout = 15,
+            fg      = theme.fg_normal,
+            bg      = theme.bg_normal
+        },
+        bat_notification_low_preset = {
+            title = "Battery low",
+            text = "Plug the cable!",
+            timeout = 15,
+            fg = theme.fg_normal,
+            bg = theme.bg_warn
+        },
+        bat_notification_critical_preset = {
+            title = "Battery exhausted",
+            text = "Shutdown imminent",
+            timeout = 15,
+            fg = theme.fg_normal,
+            bg = theme.bg_warn
+        },
         settings = function()
             if bat_now.status and bat_now.status ~= "N/A" then
                 _icon:set_image(theme.widget_battery_std)
@@ -81,7 +106,7 @@ init = function ( theme, panel )
                 _battery.colors = {color(bat_now.perc)}
                 if bat_now.ac_status == 1 then
                     _icon:set_image(theme.widget_battery_charging_full)
-                    _battery.colors = {'#ffffff'}
+                    _battery.colors = {theme._color_white}
                 elseif tonumber(bat_now.perc) <= 25 then
                     _icon:set_image(theme.widget_battery_alert)
                 end
