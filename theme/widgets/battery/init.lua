@@ -3,7 +3,6 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local lain = require("lain")
-local markup = lain.util.markup
 
 local color = function ( perc )
     local hex = '#FFFFFF'
@@ -21,7 +20,7 @@ local color = function ( perc )
     return hex
 end
 
-init = function ( theme, panel )
+init = function ( theme )
     theme.widget_battery_alert = theme.dir .. "/widgets/battery/icons/battery_alert.png"
     theme.widget_battery_charging_full = theme.dir .. "/widgets/battery/icons/battery_charging_full.png"
     theme.widget_battery_std = theme.dir .. "/widgets/battery/icons/battery_std.png"
@@ -44,24 +43,6 @@ init = function ( theme, panel )
         start_angle = 0.5 * math.pi,
         widget = wibox.container.arcchart,
     }
-    local _brightness = wibox.widget {
-        _battery,
-        value = 0,
-        min_value = 0,
-        max_value = 100,
-        thickness = 1,
-        border_width = 0,
-        bg = theme.bg_normal,
-        border_color = theme.bg_normal,
-        colors = {theme._color_white},
-        start_angle = 0.5 * math.pi,
-        widget = wibox.container.arcchart,
-    }
-    awful.widget.watch("xbacklight -get", 5, function(widget, stdout)
-        if tonumber(stdout) then
-            _brightness.value = tonumber(stdout)
-        end
-    end)
     awful.tooltip {
         objects = { _battery },
         align = "bottom_left",
@@ -96,7 +77,7 @@ init = function ( theme, panel )
             text = "Shutdown imminent",
             timeout = 15,
             fg = theme.fg_normal,
-            bg = theme.bg_warn
+            bg = theme.bg_critical
         },
         settings = function()
             if bat_now.status and bat_now.status ~= "N/A" then
@@ -113,30 +94,7 @@ init = function ( theme, panel )
             end
         end
     })
-    _brightness:buttons(awful.util.table.join(
-        awful.button({}, 1, function ()
-            awful.spawn.easy_async("xbacklight -set 50", function ( )
-                awful.spawn.easy_async('xbacklight -get', function(stdout)
-                    _brightness.value = tonumber(stdout)
-                end)
-            end)
-        end),
-        awful.button({}, 4, function ()
-            awful.spawn.easy_async("xbacklight -inc 5", function ( )
-                awful.spawn.easy_async('xbacklight -get', function(stdout)
-                    _brightness.value = tonumber(stdout)
-                end)
-            end)
-        end),
-        awful.button({}, 5, function ()
-            awful.spawn.easy_async("xbacklight -dec 5", function ( )
-                awful.spawn.easy_async('xbacklight -get', function(stdout)
-                    _brightness.value = tonumber(stdout)
-                end)
-            end)
-        end)
-    ))
-    return _brightness
+    return _battery
 end
 
 return init
