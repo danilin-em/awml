@@ -184,7 +184,8 @@ function theme.at_screen_connect(s)
             require('theme.widgets.battery')(theme, s.mywibox),
             require('theme.widgets.network')(theme),
             require('theme.widgets.clock')(theme),
-            s.mylayoutbox
+            s.mylayoutbox,
+            require('theme.widgets.power')(theme),
         },
     }
 end
