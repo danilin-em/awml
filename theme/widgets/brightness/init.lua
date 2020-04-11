@@ -39,7 +39,6 @@ init = function ( theme )
             if _brightness.auto_value then
                 _icon:set_image(theme.widget_brightness_auto)
                 value = calc_brightness()
-                awful.spawn.easy_async("xbacklight -set "..value, _brightness.update_value)
             elseif value <= 30 then
                 _icon:set_image(theme.widget_brightness_low)
             elseif value <= 60 then
@@ -61,8 +60,12 @@ init = function ( theme )
     end)
     _brightness:buttons(awful.util.table.join(
         awful.button({}, 1, function ()
+            local value = 50
             _brightness.auto_value = not _brightness.auto_value
-            awful.spawn.easy_async("xbacklight -set 5", _brightness.update_value)
+            if _brightness.auto_value then
+                value = calc_brightness()
+            end
+            awful.spawn.easy_async("xbacklight -set "..value, _brightness.update_value)
         end),
         awful.button({}, 4, function ()
             _brightness.auto_value = false
