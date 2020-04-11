@@ -40,7 +40,9 @@ init = function ( theme, panel )
                     forced_width = 36,
                     forced_height = 36,
                     buttons = awful.util.table.join(
-                        awful.button({}, 1, awesome.quit)
+                        awful.button({}, 1, function ( )
+                            awesome.quit()
+                        end)
                     ),
                     widget  = wibox.container.margin
                 },
