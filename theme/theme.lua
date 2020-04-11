@@ -102,8 +102,6 @@ function theme.at_screen_connect(s)
     -- Tags
     awful.tag(awful.util.tagnames, s, awful.layout.layouts[1])
 
-    -- Create a promptbox for each screen
-    s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
@@ -168,10 +166,11 @@ function theme.at_screen_connect(s)
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            require('theme.widgets.menu')(theme),
+            {
+                require('theme.widgets.menu')(theme),
+                widget = wibox.container.margin,
+            },
             s.mytaglist,
-            s.mypromptbox,
-            spr,
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
