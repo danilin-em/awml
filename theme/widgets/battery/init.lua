@@ -3,7 +3,6 @@
 local awful = require("awful")
 local wibox = require("wibox")
 local lain = require("lain")
-local markup = lain.util.markup
 
 local color = function ( perc )
     local hex = '#FFFFFF'
