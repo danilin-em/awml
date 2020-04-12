@@ -1,6 +1,13 @@
 # Awesome WM
 
-![Screenshot Main](./doc/2020-04-04_22-01.png)
+
+## Links
+
+[AwesomeWM DOC](https://awesomewm.org/doc/api/index.html)
+
+[AwesomeWM GIT](https://github.com/awesomeWM/awesome)
+
+[Awesome WM complements](https://github.com/lcpz/lain)
 
 [Origin](https://github.com/lcpz/awesome-copycats)
 
