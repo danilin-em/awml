@@ -13,89 +13,50 @@ init = function ( theme, screen )
     theme.widget_restart = theme.dir .. "/widgets/power/icons/restart.png"
     theme.widget_sleep = theme.dir .. "/widgets/power/icons/sleep.png"
     theme.widget_quit_awesome = theme.dir .. "/widgets/power/icons/exit.png"
+    function button( image, buttons )
+        return {
+            {
+                {
+                    image  = image,
+                    resize = false,
+                    widget = wibox.widget.imagebox
+                },
+                margins = 0,
+                buttons = buttons,
+                widget  = wibox.container.margin
+            },
+            widget = wibox.container.place
+        }
+    end
     local _icon = wibox.widget.imagebox(theme.widget_power_menu)
     local _popup = wibox{
         widget = wibox.widget {
-            {
-                {
-                    {
-                        image  = theme.widget_reload_awesome,
-                        resize = true,
-                        widget = wibox.widget.imagebox
-                    },
-                    forced_width = dpi(48),
-                    forced_height = dpi(48),
-                    buttons = awful.util.table.join(
-                        awful.button({}, 1, awesome.restart)
-                    ),
-                    widget  = wibox.container.margin
-                },
-                {
-                    {
-                        image  = theme.widget_quit_awesome,
-                        resize = true,
-                        widget = wibox.widget.imagebox
-                    },
-                    forced_width = dpi(48),
-                    forced_height = dpi(48),
-                    buttons = awful.util.table.join(
-                        awful.button({}, 1, function ( )
-                            awesome.quit()
-                        end)
-                    ),
-                    widget  = wibox.container.margin
-                },
-                {
-                    {
-                        image  = theme.widget_sleep,
-                        resize = true,
-                        widget = wibox.widget.imagebox
-                    },
-                    forced_width = dpi(48),
-                    forced_height = dpi(48),
-                    buttons = awful.util.table.join(
-                        awful.button({}, 1, function ( )
-                            awful.spawn.with_shell("systemctl suspend")
-                        end)
-                    ),
-                    widget  = wibox.container.margin
-                },
-                {
-                    {
-                        image  = theme.widget_restart,
-                        resize = true,
-                        widget = wibox.widget.imagebox
-                    },
-                    forced_width = dpi(48),
-                    forced_height = dpi(48),
-                    buttons = awful.util.table.join(
-                        awful.button({}, 1, function ( )
-                            awful.spawn.with_shell("systemctl reboot")
-                        end)
-                    ),
-                    widget  = wibox.container.margin
-                },
-                {
-                    {
-                        image  = theme.widget_power_off,
-                        resize = true,
-                        widget = wibox.widget.imagebox
-                    },
-                    forced_width = dpi(48),
-                    forced_height = dpi(48),
-                    buttons = awful.util.table.join(
-                        awful.button({}, 1, function ( )
-                            awful.spawn.with_shell("systemctl poweroff")
-                        end)
-                    ),
-                    widget  = wibox.container.margin
-                },
-                spacing = dpi(50),
-                layout = wibox.layout.fixed.horizontal,
-            },
-            margins = dpi(50),
-            widget  = wibox.container.margin
+            button(theme.widget_reload_awesome, awful.util.table.join(
+                awful.button({}, 1, awesome.restart)
+            )),
+            button(theme.widget_quit_awesome, awful.util.table.join(
+                awful.button({}, 1, function ( )
+                    awesome.quit()
+                end)
+            )),
+            button(theme.widget_sleep, awful.util.table.join(
+                awful.button({}, 1, function ( )
+                    awful.spawn.with_shell("systemctl suspend")
+                end)
+            )),
+            button(theme.widget_restart, awful.util.table.join(
+                awful.button({}, 1, function ( )
+                    awful.spawn.with_shell("systemctl reboot")
+                end)
+            )),
+            button(theme.widget_power_off, awful.util.table.join(
+                awful.button({}, 1, function ( )
+                    awful.spawn.with_shell("systemctl poweroff")
+                end)
+            )),
+            layout = wibox.layout.flex.horizontal,
         },
+        id = 'popup',
         ontop = true,
         opacity = 0.5,
         x = 0, y = 0,
