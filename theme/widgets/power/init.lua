@@ -4,6 +4,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 local lain = require("lain")
 local gears = require("gears")
+local dpi   = require("beautiful.xresources").apply_dpi
 
 init = function ( theme, panel )
     theme.widget_power_menu = theme.dir .. "/widgets/power/icons/power_menu.png"
@@ -22,9 +23,8 @@ init = function ( theme, panel )
                         resize = true,
                         widget = wibox.widget.imagebox
                     },
-                    margins = 5,
-                    forced_width = 36,
-                    forced_height = 36,
+                    forced_width = dpi(48),
+                    forced_height = dpi(48),
                     buttons = awful.util.table.join(
                         awful.button({}, 1, awesome.restart)
                     ),
@@ -36,9 +36,8 @@ init = function ( theme, panel )
                         resize = true,
                         widget = wibox.widget.imagebox
                     },
-                    margins = 5,
-                    forced_width = 36,
-                    forced_height = 36,
+                    forced_width = dpi(48),
+                    forced_height = dpi(48),
                     buttons = awful.util.table.join(
                         awful.button({}, 1, function ( )
                             awesome.quit()
@@ -52,9 +51,8 @@ init = function ( theme, panel )
                         resize = true,
                         widget = wibox.widget.imagebox
                     },
-                    margins = 5,
-                    forced_width = 36,
-                    forced_height = 36,
+                    forced_width = dpi(48),
+                    forced_height = dpi(48),
                     buttons = awful.util.table.join(
                         awful.button({}, 1, function ( )
                             awful.spawn.with_shell("systemctl suspend")
@@ -68,9 +66,8 @@ init = function ( theme, panel )
                         resize = true,
                         widget = wibox.widget.imagebox
                     },
-                    margins = 5,
-                    forced_width = 36,
-                    forced_height = 36,
+                    forced_width = dpi(48),
+                    forced_height = dpi(48),
                     buttons = awful.util.table.join(
                         awful.button({}, 1, function ( )
                             awful.spawn.with_shell("systemctl reboot")
@@ -84,9 +81,8 @@ init = function ( theme, panel )
                         resize = true,
                         widget = wibox.widget.imagebox
                     },
-                    margins = 5,
-                    forced_width = 36,
-                    forced_height = 36,
+                    forced_width = dpi(48),
+                    forced_height = dpi(48),
                     buttons = awful.util.table.join(
                         awful.button({}, 1, function ( )
                             awful.spawn.with_shell("systemctl poweroff")
@@ -94,17 +90,17 @@ init = function ( theme, panel )
                     ),
                     widget  = wibox.container.margin
                 },
-                layout = wibox.layout.fixed.vertical,
+                spacing = dpi(50),
+                layout = wibox.layout.fixed.horizontal,
             },
-            margins = 10,
+            margins = dpi(50),
             widget  = wibox.container.margin
         },
         hide_on_right_click = true,
         bg           = theme.bg_normal,
         fg           = theme.fg_normal,
-        border_color = theme.border_normal,
-        border_width = 1,
-        placement    = awful.placement.top_right,
+        border_width = 0,
+        placement    = awful.placement.centered,
         shape        = gears.shape.partially_rounded_rect,
         ontop        = true,
         visible      = false,
