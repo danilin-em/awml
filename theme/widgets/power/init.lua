@@ -14,7 +14,10 @@ init = function ( theme, screen )
     theme.widget_sleep = theme.dir .. "/widgets/power/icons/sleep.png"
     theme.widget_quit_awesome = theme.dir .. "/widgets/power/icons/exit.png"
     function button( image, buttons )
-        local background = wibox.container.background(wibox.widget.imagebox(image, false))
+        local margin = 20
+        local background = wibox.container.background(
+            wibox.container.margin(wibox.widget.imagebox(image, false), margin, margin, margin, margin)
+        )
         background:connect_signal('mouse::enter', function ( curr )
             curr.bg = theme.bg_focus
         end)
