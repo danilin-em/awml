@@ -7,12 +7,13 @@ local gears = require("gears")
 local dpi   = require("beautiful.xresources").apply_dpi
 
 init = function ( theme, screen )
-    theme.widget_power_menu = theme.dir .. "/widgets/power/icons/power_menu.png"
-    theme.widget_power_off = theme.dir .. "/widgets/power/icons/power_off.png"
-    theme.widget_reload_awesome = theme.dir .. "/widgets/power/icons/reload_awesome.png"
-    theme.widget_restart = theme.dir .. "/widgets/power/icons/restart.png"
-    theme.widget_sleep = theme.dir .. "/widgets/power/icons/sleep.png"
-    theme.widget_quit_awesome = theme.dir .. "/widgets/power/icons/exit.png"
+    theme.widget_power_power_menu = theme.dir .. "/widgets/power/icons/power_menu.png"
+    theme.widget_power_power_off = theme.dir .. "/widgets/power/icons/power_off.png"
+    theme.widget_power_reload_awesome = theme.dir .. "/widgets/power/icons/reload_awesome.png"
+    theme.widget_power_restart = theme.dir .. "/widgets/power/icons/restart.png"
+    theme.widget_power_sleep = theme.dir .. "/widgets/power/icons/sleep.png"
+    theme.widget_power_quit_awesome = theme.dir .. "/widgets/power/icons/exit.png"
+    theme.widget_power_lock = theme.dir .. "/widgets/power/icons/lock.png"
     function button( image, buttons )
         local margin = 20
         local background = wibox.container.background(
@@ -28,29 +29,34 @@ init = function ( theme, screen )
         background:buttons(buttons)
         return wibox.container.place(background)
     end
-    local _icon = wibox.container.background(wibox.widget.imagebox(theme.widget_power_menu))
+    local _icon = wibox.container.background(wibox.widget.imagebox(theme.widget_power_power_menu))
     _icon.bg = theme.bg_normal
     local _popup = wibox{
         widget = wibox.widget {
-            button(theme.widget_reload_awesome, awful.util.table.join(
+            button(theme.widget_power_reload_awesome, awful.util.table.join(
                 awful.button({}, 1, awesome.restart)
             )),
-            button(theme.widget_quit_awesome, awful.util.table.join(
+            button(theme.widget_power_lock, awful.util.table.join(
+                awful.button({}, 1, function ( )
+                    awful.spawn.with_shell("dm-tool lock") -- TODO: Use global lock command. Linked by #23
+                end)
+            )),
+            button(theme.widget_power_quit_awesome, awful.util.table.join(
                 awful.button({}, 1, function ( )
                     awesome.quit()
                 end)
             )),
-            button(theme.widget_sleep, awful.util.table.join(
+            button(theme.widget_power_sleep, awful.util.table.join(
                 awful.button({}, 1, function ( )
                     awful.spawn.with_shell("systemctl suspend")
                 end)
             )),
-            button(theme.widget_restart, awful.util.table.join(
+            button(theme.widget_power_restart, awful.util.table.join(
                 awful.button({}, 1, function ( )
                     awful.spawn.with_shell("systemctl reboot")
                 end)
             )),
-            button(theme.widget_power_off, awful.util.table.join(
+            button(theme.widget_power_power_off, awful.util.table.join(
                 awful.button({}, 1, function ( )
                     awful.spawn.with_shell("systemctl poweroff")
                 end)
