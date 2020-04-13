@@ -14,24 +14,16 @@ init = function ( theme, screen )
     theme.widget_sleep = theme.dir .. "/widgets/power/icons/sleep.png"
     theme.widget_quit_awesome = theme.dir .. "/widgets/power/icons/exit.png"
     function button( image, buttons )
-        local x = wibox.container.place()
-        x:setup({
-            {
-                image  = image,
-                resize = false,
-                widget = wibox.widget.imagebox
-            },
-            bg = theme.bg_normal,
-            buttons = buttons,
-            widget  = wibox.container.background
-        })
-        x:get_children()[1]:connect_signal('mouse::enter', function ( curr )
+        local background = wibox.container.background(wibox.widget.imagebox(image, false))
+        background:connect_signal('mouse::enter', function ( curr )
             curr.bg = theme.bg_focus
         end)
-        x:get_children()[1]:connect_signal('mouse::leave', function ( curr )
+        background:connect_signal('mouse::leave', function ( curr )
             curr.bg = theme.bg_normal
         end)
-        return x
+        background.bg = theme.bg_normal
+        background:buttons(buttons)
+        return wibox.container.place(background)
     end
     local _icon = wibox.container.background(wibox.widget.imagebox(theme.widget_power_menu))
     _icon.bg = theme.bg_normal
