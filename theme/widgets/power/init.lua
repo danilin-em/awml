@@ -14,21 +14,22 @@ init = function ( theme, screen )
     theme.widget_sleep = theme.dir .. "/widgets/power/icons/sleep.png"
     theme.widget_quit_awesome = theme.dir .. "/widgets/power/icons/exit.png"
     function button( image, buttons )
-        return {
-            {
-                {
-                    image  = image,
-                    resize = false,
-                    widget = wibox.widget.imagebox
-                },
-                margins = 0,
-                buttons = buttons,
-                widget  = wibox.container.margin
-            },
-            widget = wibox.container.place
-        }
+        local margin = 20
+        local background = wibox.container.background(
+            wibox.container.margin(wibox.widget.imagebox(image, false), margin, margin, margin, margin)
+        )
+        background:connect_signal('mouse::enter', function ( curr )
+            curr.bg = theme.bg_focus
+        end)
+        background:connect_signal('mouse::leave', function ( curr )
+            curr.bg = theme.bg_normal
+        end)
+        background.bg = theme.bg_normal
+        background:buttons(buttons)
+        return wibox.container.place(background)
     end
-    local _icon = wibox.widget.imagebox(theme.widget_power_menu)
+    local _icon = wibox.container.background(wibox.widget.imagebox(theme.widget_power_menu))
+    _icon.bg = theme.bg_normal
     local _popup = wibox{
         widget = wibox.widget {
             button(theme.widget_reload_awesome, awful.util.table.join(
@@ -71,6 +72,12 @@ init = function ( theme, screen )
             _popup.visible = not _popup.visible
         end)
     ))
+    _icon:connect_signal('mouse::enter', function ( )
+        _icon.bg = theme.bg_focus
+    end)
+    _icon:connect_signal('mouse::leave', function ( )
+        _icon.bg = theme.bg_normal
+    end)
     _popup:buttons(awful.util.table.join(
         awful.button({}, 1, function ( )
             _popup.visible = false
