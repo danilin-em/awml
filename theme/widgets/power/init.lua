@@ -38,7 +38,7 @@ init = function ( theme, screen )
             )),
             button(theme.widget_power_lock, awful.util.table.join(
                 awful.button({}, 1, function ( )
-                    awful.spawn.with_shell("dm-tool lock")
+                    awful.spawn.with_shell("dm-tool lock") -- TODO: Use global lock command. Linked by #23
                 end)
             )),
             button(theme.widget_power_quit_awesome, awful.util.table.join(
