@@ -13,6 +13,7 @@ init = function ( theme, screen )
     theme.widget_power_restart = theme.dir .. "/widgets/power/icons/restart.png"
     theme.widget_power_sleep = theme.dir .. "/widgets/power/icons/sleep.png"
     theme.widget_power_quit_awesome = theme.dir .. "/widgets/power/icons/exit.png"
+    theme.widget_power_lock = theme.dir .. "/widgets/power/icons/lock.png"
     function button( image, buttons )
         local margin = 20
         local background = wibox.container.background(
@@ -34,6 +35,11 @@ init = function ( theme, screen )
         widget = wibox.widget {
             button(theme.widget_power_reload_awesome, awful.util.table.join(
                 awful.button({}, 1, awesome.restart)
+            )),
+            button(theme.widget_power_lock, awful.util.table.join(
+                awful.button({}, 1, function ( )
+                    awful.spawn.with_shell("dm-tool lock")
+                end)
             )),
             button(theme.widget_power_quit_awesome, awful.util.table.join(
                 awful.button({}, 1, function ( )
