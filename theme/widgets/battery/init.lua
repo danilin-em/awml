@@ -2,7 +2,7 @@
 
 local awful = require("awful")
 local wibox = require("wibox")
-local lain = require("lain")
+local bat = require("lib.lain.widget.bat")
 
 local color = function ( perc )
     local hex = '#FFFFFF'
@@ -53,7 +53,7 @@ init = function ( theme )
             return "Battery: " .. _value.perc .. "%"
         end,
     }
-    lain.widget.bat({
+    bat({
         notify = "off",
         timeout = 5,
         n_perc = {_perc_crit, _perc_low},
