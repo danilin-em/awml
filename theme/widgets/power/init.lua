@@ -6,7 +6,7 @@ local lain = require("lain")
 local gears = require("gears")
 local dpi   = require("beautiful.xresources").apply_dpi
 
-init = function ( theme, panel )
+init = function ( theme, screen )
     theme.widget_power_menu = theme.dir .. "/widgets/power/icons/power_menu.png"
     theme.widget_power_off = theme.dir .. "/widgets/power/icons/power_off.png"
     theme.widget_reload_awesome = theme.dir .. "/widgets/power/icons/reload_awesome.png"
@@ -14,8 +14,8 @@ init = function ( theme, panel )
     theme.widget_sleep = theme.dir .. "/widgets/power/icons/sleep.png"
     theme.widget_quit_awesome = theme.dir .. "/widgets/power/icons/exit.png"
     local _icon = wibox.widget.imagebox(theme.widget_power_menu)
-    local _popup = awful.popup {
-        widget = {
+    local _popup = wibox{
+        widget = wibox.widget {
             {
                 {
                     {
@@ -96,19 +96,28 @@ init = function ( theme, panel )
             margins = dpi(50),
             widget  = wibox.container.margin
         },
-        hide_on_right_click = true,
-        bg           = theme.bg_normal,
-        fg           = theme.fg_normal,
-        border_width = 0,
-        placement    = awful.placement.centered,
-        shape        = gears.shape.partially_rounded_rect,
-        ontop        = true,
-        visible      = false,
+        ontop = true,
+        opacity = 0.5,
+        x = 0, y = 0,
+        width = screen.geometry.width,
+        height = screen.geometry.height,
+        visible = false,
+        bg = theme.bg_normal,
+        fg = theme.fg_normal,
     }
-    _popup:bind_to_widget(_icon, 1)
-    _popup:connect_signal('mouse::leave', function ( )
-        _popup.visible = false
-    end)
+    _icon:buttons(awful.util.table.join(
+        awful.button({}, 1, function ( )
+            _popup.visible = not _popup.visible
+        end)
+    ))
+    _popup:buttons(awful.util.table.join(
+        awful.button({}, 1, function ( )
+            _popup.visible = false
+        end),
+        awful.button({}, 3, function ( )
+            _popup.visible = false
+        end)
+    ))
     return _icon
 end
 

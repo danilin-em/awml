@@ -185,7 +185,7 @@ function theme.at_screen_connect(s)
             require('theme.widgets.network')(theme),
             require('theme.widgets.clock')(theme),
             s.mylayoutbox,
-            require('theme.widgets.power')(theme),
+            require('theme.widgets.power')(theme, s),
         },
     }
 end
