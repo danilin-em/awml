@@ -2,7 +2,7 @@
 
 local awful = require("awful")
 local wibox = require("wibox")
-local lain = require("lain")
+local bat = require("lib.lain.widget.bat")
 
 local color = function ( perc )
     local hex = '#FFFFFF'
@@ -53,7 +53,7 @@ init = function ( theme )
             return "Battery: " .. _value.perc .. "%"
         end,
     }
-    lain.widget.bat({
+    bat({
         notify = "off",
         timeout = 5,
         n_perc = {_perc_crit, _perc_low},
@@ -61,21 +61,21 @@ init = function ( theme )
         bat_notification_charged_preset = {
             title   = "Battery full",
             text    = "You can unplug the cable",
-            timeout = 15,
+            timeout = 5,
             fg      = theme.fg_normal,
             bg      = theme.bg_normal
         },
         bat_notification_low_preset = {
             title = "Battery low",
             text = "Plug the cable!",
-            timeout = 15,
+            timeout = 30,
             fg = theme.fg_normal,
             bg = theme.bg_warn
         },
         bat_notification_critical_preset = {
             title = "Battery exhausted",
             text = "Shutdown imminent",
-            timeout = 15,
+            timeout = 0,
             fg = theme.fg_normal,
             bg = theme.bg_critical
         },
