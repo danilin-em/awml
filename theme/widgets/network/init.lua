@@ -31,7 +31,7 @@ init = function ( theme )
             return _value
         end,
     }
-    awesome.connect_signal('service:network:value', function ( net_now )
+    awesome.connect_signal('service:network:main:value', function ( net_now )
         _widget.visible = true
         local eth0 = net_now.devices.eth0
         if eth0 then

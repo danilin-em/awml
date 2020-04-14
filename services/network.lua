@@ -2,22 +2,22 @@
 
 local awesome = awesome
 
-local lain = require("lain")
+local net = require("lain.widget.net")
 
 local default = {
-    notify = "off",
-    wifi_state = "on",
-    eth_state = "on",
+    id = 'main',
 }
 
 return function ( args )
     args = args or {}
-    local settings = {}
-    for k,v in pairs(default) do settings[k] = v end
-    for k,v in pairs(args) do settings[k] = v end
-    settings.settings = settings.settings or function()
-        awesome.emit_signal('service:network:value', net_now)
+    args.id = tostring(args.id or default.id)
+    local signal = 'service:network:'..args.id
+    args.settings = function()
+        awesome.emit_signal(signal..':value', net_now)
     end
-    lain.widget.net(settings)
+    local service = net(args)
+    awesome.emit_signal(signal..':init', service)
+    awesome.connect_signal(signal..':update', service.update)
+    return service
 end
 
