@@ -541,8 +541,13 @@ end)
 
 -- Init Services
 local services = {
-    require("services.battery")({
-        theme = beautiful,
+    battery = require("services.battery")({
+        n_perc = { low = 15, crit = 5 },
+        timeout = 5,
+        notify = "on",
+        bat_notification_charged_preset = beautiful.bat_notification_charged_preset,
+        bat_notification_low_preset = beautiful.bat_notification_low_preset,
+        bat_notification_critical_preset = beautiful.bat_notification_critical_preset,
     }),
     require("services.brightness")({
         theme = beautiful,

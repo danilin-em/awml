@@ -83,6 +83,29 @@ theme.titlebar_sticky_button_focus_active       = theme.dir .. "/icons/titlebar/
 theme.titlebar_sticky_button_focus_inactive     = theme.dir .. "/icons/titlebar/sticky_focus_inactive.png"
 theme.titlebar_sticky_button_normal_active      = theme.dir .. "/icons/titlebar/sticky_normal_active.png"
 theme.titlebar_sticky_button_normal_inactive    = theme.dir .. "/icons/titlebar/sticky_normal_inactive.png"
+
+-- Battery notifications
+theme.bat_notification_charged_preset = {
+    title = "Battery full",
+    text = "You can unplug the cable",
+    timeout = 5,
+    fg = theme.fg_normal or default.theme.fg_normal,
+    bg = theme.bg_normal or default.theme.bg_normal, 
+}
+theme.bat_notification_low_preset = {
+    title = "Battery low",
+    text = "Plug the cable!",
+    timeout = 30,
+    fg = theme.fg_normal or default.theme.fg_normal ,
+    bg = theme.bg_warn or default.theme.bg_warn 
+}
+theme.bat_notification_critical_preset = {
+    title = "Battery exhausted",
+    text = "Shutdown imminent",
+    timeout = 0,
+    fg = theme.fg_normal or default.theme.fg_normal ,
+    bg = theme.bg_critical or default.theme.bg_critical 
+}
 -- }}
 
 -- Separators

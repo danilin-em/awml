@@ -52,7 +52,7 @@ init = function ( theme )
             return "Battery: " .. _value.perc .. "%"
         end,
     }
-    awesome.connect_signal('service:battery:value', function ( bat_now )
+    awesome.connect_signal('service:battery:main:value', function ( bat_now )
         if bat_now.status and bat_now.status ~= "N/A" then
             _icon:set_image(theme.widget_battery_std)
             _value = bat_now
