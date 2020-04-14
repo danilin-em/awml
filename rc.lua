@@ -544,4 +544,7 @@ local services = {
     require("services.battery")({
         theme = beautiful,
     }),
+    require("services.brightness")({
+        theme = beautiful,
+    }),
 }

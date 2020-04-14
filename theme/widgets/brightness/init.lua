@@ -48,8 +48,7 @@ init = function ( theme )
             end
         end)
     end
-    awful.widget.watch("xbacklight -get", 5, function(widget, stdout)
-        local value = tonumber(stdout)
+    awesome.connect_signal('service:brightness:value', function(value)
         if _brightness.auto_value then
             value = calc_brightness()
             awful.spawn.easy_async("xbacklight -set "..value, _brightness.update_value)
