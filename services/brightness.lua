@@ -20,4 +20,7 @@ return function ( args )
         local value = tonumber(stdout) or 0
         awesome.emit_signal('service:brightness:value', value)
     end)
+    awesome.connect_signal('service:brightness:sync', function(name, value)
+        awesome.emit_signal('service:brightness:sync>'..tostring(name), value)
+    end)
 end
