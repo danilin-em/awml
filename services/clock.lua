@@ -1,25 +1,22 @@
--- service_clock
+-- service clock
 local awesome = awesome
 
-local awful = require("awful")
+local watch = require("awful.widget.watch")
 
 local default = {
-    settings = {
-        id = 'main',
-        timeout = 1,
-    },
+    id = 'main',
+    timeout = 1,
 }
 
-return function( args )
-    args = args or default
-    local settings = args.settings or default.settings
-    -- Defaults
-    settings.timeout = settings.timeout or default.settings.timeout
-    settings.id = settings.id or default.settings.id
-    -- Watcher
-    awful.widget.watch("true", settings.timeout, function(_, stdout)
+return function ( args )
+    args = args or {}
+    args.id = tostring(args.id or default.id)
+    args.timeout = tonumber(args.timeout or default.timeout)
+    local signal = 'service:clock:'..args.id
+    local service = watch("true", args.timeout, function(_, stdout)
         local time = os.date("!*t")
-        awesome.emit_signal('service:clock:'..settings.id..':time', time)
-        awesome.emit_signal('service:clock:time', time)
+        awesome.emit_signal(signal..':time', time)
     end)
+    awesome.emit_signal(signal..':init', service)
+    return service
 end
