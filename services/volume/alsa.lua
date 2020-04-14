@@ -4,13 +4,20 @@ local awesome = awesome
 
 local alsa = require("lain.widget.alsa")
 
-return function ( )
-    local service = alsa({
-        settings = function()
-            awesome.emit_signal('service:volume:alsa:value', volume_now)
-        end
-    })
-    awesome.emit_signal('service:volume:alsa:init', service)
-    awesome.connect_signal('service:volume:alsa:update', service.update)
+local default = {
+    id = 'main',
+}
+
+return function ( args )
+    args = args or {}
+    args.id = tostring(args.id or default.id)
+    local signal = 'service:volume:alsa:'..args.id
+    args.settings = function()
+        awesome.emit_signal(signal..':value', volume_now)
+    end
+    local service = alsa(args)
+    awesome.emit_signal(signal..':init', service)
+    awesome.connect_signal(signal..':update', service.update)
+    return service
 end
 

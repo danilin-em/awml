@@ -22,7 +22,7 @@ init = function ( theme )
         start_angle = 0.5 * math.pi,
         widget = wibox.container.arcchart,
     }
-    awesome.connect_signal('service:volume:alsa:value', function ( volume_now )
+    awesome.connect_signal('service:volume:alsa:main:value', function ( volume_now )
         _value = volume_now
         _widget.value = volume_now.level
         if volume_now.status == "off" then
@@ -43,15 +43,15 @@ init = function ( theme )
     _widget:buttons(awful.util.table.join(
         awful.button({}, 1, function ()
              awful.spawn("amixer -D pulse set Master 1+ toggle")
-             awesome.emit_signal('service:volume:alsa:update')
+             awesome.emit_signal('service:volume:alsa:main:update')
         end),
         awful.button({}, 4, function ()
             awful.spawn("amixer -D pulse set Master 1%+")
-            awesome.emit_signal('service:volume:alsa:update')
+            awesome.emit_signal('service:volume:alsa:main:update')
         end),
         awful.button({}, 5, function ()
             awful.spawn("amixer -D pulse set Master 5%-")
-            awesome.emit_signal('service:volume:alsa:update')
+            awesome.emit_signal('service:volume:alsa:main:update')
         end)
     ))
     return _widget
