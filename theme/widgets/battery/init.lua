@@ -2,7 +2,6 @@
 
 local awful = require("awful")
 local wibox = require("wibox")
-local bat = require("lib.lain.widget.bat")
 
 local color = function ( perc )
     local hex = '#FFFFFF'
@@ -53,47 +52,20 @@ init = function ( theme )
             return "Battery: " .. _value.perc .. "%"
         end,
     }
-    bat({
-        notify = "off",
-        timeout = 5,
-        n_perc = {_perc_crit, _perc_low},
-        notify = "on",
-        bat_notification_charged_preset = {
-            title   = "Battery full",
-            text    = "You can unplug the cable",
-            timeout = 5,
-            fg      = theme.fg_normal,
-            bg      = theme.bg_normal
-        },
-        bat_notification_low_preset = {
-            title = "Battery low",
-            text = "Plug the cable!",
-            timeout = 30,
-            fg = theme.fg_normal,
-            bg = theme.bg_warn
-        },
-        bat_notification_critical_preset = {
-            title = "Battery exhausted",
-            text = "Shutdown imminent",
-            timeout = 0,
-            fg = theme.fg_normal,
-            bg = theme.bg_critical
-        },
-        settings = function()
-            if bat_now.status and bat_now.status ~= "N/A" then
-                _icon:set_image(theme.widget_battery_std)
-                _value = bat_now
-                _battery.value = bat_now.perc
-                _battery.colors = {color(bat_now.perc)}
-                if bat_now.ac_status == 1 then
-                    _icon:set_image(theme.widget_battery_charging_full)
-                    _battery.colors = {theme._color_white}
-                elseif tonumber(bat_now.perc) <= 25 then
-                    _icon:set_image(theme.widget_battery_alert)
-                end
+    awesome.connect_signal('service:battery:value', function ( bat_now )
+        if bat_now.status and bat_now.status ~= "N/A" then
+            _icon:set_image(theme.widget_battery_std)
+            _value = bat_now
+            _battery.value = bat_now.perc
+            _battery.colors = {color(bat_now.perc)}
+            if bat_now.ac_status == 1 then
+                _icon:set_image(theme.widget_battery_charging_full)
+                _battery.colors = {theme._color_white}
+            elseif tonumber(bat_now.perc) <= 25 then
+                _icon:set_image(theme.widget_battery_alert)
             end
         end
-    })
+    end)
     return _battery
 end
 
