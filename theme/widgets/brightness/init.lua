@@ -39,7 +39,6 @@ init = function ( theme )
     function _brightness.update_value( )
         awful.spawn.easy_async('xbacklight -get', function(stdout)
             local value = tonumber(stdout) or 0
-            awesome.emit_signal('service:brightness:value', value)
             _brightness.value = value
             if _brightness.auto_value then
                 _icon:set_image(theme.widget_brightness_auto)
