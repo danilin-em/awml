@@ -47,6 +47,29 @@ do
 end
 -- }}}
 
+-- {{{ Init Services
+local services = {
+    battery = require("services.battery")({
+        n_perc = { low = 15, crit = 5 },
+        timeout = 5,
+        notify = "on",
+        bat_notification_charged_preset = beautiful.bat_notification_charged_preset,
+        bat_notification_low_preset = beautiful.bat_notification_low_preset,
+        bat_notification_critical_preset = beautiful.bat_notification_critical_preset,
+    }),
+    brightness = require("services.brightness")(),
+    clock = require("services.clock")(),
+    usage_cpu = require("services.usage.cpu")(),
+    usage_mem = require("services.usage.mem")(),
+    network = require("services.network")({
+        notify = "on",
+        wifi_state = "on",
+        eth_state = "on",
+    }),
+    volume_alsa = require("services.volume.alsa")(),
+}
+-- }}}
+
 -- {{{ Autostart
 
 -- This function will run once every time Awesome is started
@@ -538,25 +561,3 @@ client.connect_signal("property::floating", function (c)
     end
 end)
 -- }}}
-
--- Init Services
-local services = {
-    battery = require("services.battery")({
-        n_perc = { low = 15, crit = 5 },
-        timeout = 5,
-        notify = "on",
-        bat_notification_charged_preset = beautiful.bat_notification_charged_preset,
-        bat_notification_low_preset = beautiful.bat_notification_low_preset,
-        bat_notification_critical_preset = beautiful.bat_notification_critical_preset,
-    }),
-    require("services.brightness")(),
-    require("services.clock")(),
-    require("services.usage.cpu")(),
-    require("services.usage.mem")(),
-    require("services.network")({
-        notify = "on",
-        wifi_state = "on",
-        eth_state = "on",
-    }),
-    require("services.volume.alsa")(),
-}
