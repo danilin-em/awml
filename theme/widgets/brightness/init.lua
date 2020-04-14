@@ -32,9 +32,6 @@ init = function ( theme )
         start_angle = 0.5 * math.pi,
         widget = wibox.container.arcchart,
     }
-    awesome.connect_signal('service:brightness:sync>auto', function(value)
-        _brightness.auto_value = value
-    end)
     function _brightness.update_auto_value( value )
         _brightness.auto_value = value
         awesome.emit_signal('service:brightness:sync', 'auto', value)
@@ -42,6 +39,7 @@ init = function ( theme )
     function _brightness.update_value( )
         awful.spawn.easy_async('xbacklight -get', function(stdout)
             local value = tonumber(stdout) or 0
+            awesome.emit_signal('service:brightness:value', value)
             _brightness.value = value
             if _brightness.auto_value then
                 _icon:set_image(theme.widget_brightness_auto)
@@ -63,6 +61,10 @@ init = function ( theme )
         if value then
             _brightness.value = value
         end
+    end)
+    awesome.connect_signal('service:brightness:sync>auto', function(value)
+        _brightness.auto_value = value
+        _brightness.update_value()
     end)
     _brightness:buttons(awful.util.table.join(
         awful.button({}, 1, function ()
