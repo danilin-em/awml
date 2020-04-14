@@ -2,53 +2,70 @@
 
 local awful = require("awful")
 local wibox = require("wibox")
-local lain = require("lain")
-local markup = lain.util.markup
-
 
 init = function ( theme )
     theme.widget_net_wifi     = theme.dir .. "/widgets/network/icons/wifi.png"
     theme.widget_net_wifi_off = theme.dir .. "/widgets/network/icons/wifi_off.png"
-    local _value = ""
-    local _icon = wibox.widget.imagebox(theme.widget_net_wifi_off)
-    local _widget = wibox.widget {
-        _icon,
-        value = 30,
-        min_value = 30,
-        max_value = 67,
-        thickness = 1,
-        border_width = 0,
-        bg = theme.bg_normal,
-        colors = {'#ffffff'},
-        start_angle = 0.5 * math.pi,
-        visible = false,
-        widget = wibox.container.arcchart,
+    theme.widget_net_ethernet = theme.dir .. "/widgets/network/icons/ethernet.png"
+    theme.widget_net_airplanemode = theme.dir .. "/widgets/network/icons/airplanemode.png"
+
+    local _devices = wibox.widget{
+        layout = wibox.layout.fixed.horizontal,
     }
-    awful.tooltip {
-        objects = { _widget },
-        align = "bottom_left",
-        timer_function = function()
-            return _value
-        end,
-    }
-    awesome.connect_signal('service:network:main:value', function ( net_now )
-        _widget.visible = true
-        local eth0 = net_now.devices.eth0
-        if eth0 then
-            if eth0.ethernet then
-                -- TODO: Wired icon
+    function _devices.create ( self, name, device )
+        local icon = wibox.widget.imagebox(theme.widget_net_airplanemode)
+        if device.wifi then
+            icon = wibox.widget.imagebox(theme.widget_net_wifi)
+        elseif device.ethernet then
+            icon = wibox.widget.imagebox(theme.widget_net_ethernet)
+        end
+        local widget = wibox.widget {
+            icon,
+            bg = theme.bg_normal,
+            visible = (device.state == "up"),
+            widget = wibox.container.margin,
+            -- Device props
+            name = name,
+            state = 'down',
+        }
+        awful.tooltip {
+            objects = { widget },
+            align = "bottom_left",
+            timer_function = function()
+                return name
+            end,
+        }
+        function widget.update( self, device )
+            if device.wifi then
+                self._private.widget:set_image(theme.widget_net_wifi)
+            elseif device.ethernet then
+                self._private.widget:set_image(theme.widget_net_ethernet)
+            end
+            self.visible = (device.state == "up")
+        end
+        self:add(widget)
+        return widget
+    end
+    function _devices.init ( self, name, device )
+        local widget = nil
+        for _, w in pairs(self._private.widgets) do
+            if w.name == name then
+                widget = w
+                break
             end
         end
-        local wlan0 = net_now.devices.wlp2s0
-        if wlan0 then
-            if wlan0.wifi then
-                _value = wlan0.signal .. " dBm"
-                _widget.value = 0 - wlan0.signal
-                _icon:set_image(theme.widget_net_wifi)
-            end
+        if widget then
+            widget:update(device)
+        else
+            self:create(name, device)
+        end
+    end
+    awesome.connect_signal('service:network:main:value', function ( net_now )
+        for name, device in pairs(net_now.devices) do
+            _devices:init(name, device)
         end
     end)
-    return _widget
+    return _devices
 end
 
 return init
