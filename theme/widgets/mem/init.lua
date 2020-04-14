@@ -50,16 +50,16 @@ init = function ( theme )
         objects = { _mem },
         align = "bottom_left",
         timer_function = function()
-            return "Memory used: ".. _value.used .. " (MiB)\n" 
-                .. "Swap memory used: ".. _value.swapused .. " (MiB)\n" 
-                .. "Memory percentage: ".. _value.perc .. "%"
+            return "Memory used: ".. tostring(_value.used) .. " (MiB)\n" 
+                .. "Swap memory used: ".. tostring(_value.swapused) .. " (MiB)\n" 
+                .. "Memory percentage: ".. tostring(_value.perc) .. "%"
         end,
     }
-    awesome.connect_signal('service:usage:cpu:value', function ( cpu_now )
+    awesome.connect_signal('service:usage:cpu:main:value', function ( cpu_now )
         _cpu.value = cpu_now.usage
         _cpu.colors = {color(cpu_now.usage)}
     end)
-    awesome.connect_signal('service:usage:mem:value', function ( mem_now )
+    awesome.connect_signal('service:usage:mem:main:value', function ( mem_now )
         _value = mem_now
         _mem.value = mem_now.perc
         _mem.colors = {color(mem_now.perc)}
