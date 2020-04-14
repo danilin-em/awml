@@ -23,8 +23,6 @@ local dpi           = require("beautiful.xresources").apply_dpi
 local xrandr        = require("xrandr")
 -- }}}
 
-local service_battery = require("services.battery") 
-
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -542,6 +540,8 @@ end)
 -- }}}
 
 -- Init Services
-service_battery({
-    theme = beautiful
-})
+local services = {
+    require("services.battery")({
+        theme = beautiful,
+    }),
+}
