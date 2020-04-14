@@ -227,9 +227,9 @@ globalkeys = my_table.join(
         {description = "copy gtk to terminal", group = "hotkeys"}),
     awful.key({ }, "Print", function() os.execute("flameshot gui") end,
         {description = "take a screenshot", group = "hotkeys"}),
-    awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 5") end,
+    awful.key({ }, "XF86MonBrightnessUp", function () services.brightness:inc(5) end,
         {description = "+10%", group = "hotkeys"}),
-    awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 5") end,
+    awful.key({ }, "XF86MonBrightnessDown", function () services.brightness:dec(5) end,
         {description = "-10%", group = "hotkeys"}),
     awful.key({ }, "XF86AudioRaiseVolume",
         function ()
