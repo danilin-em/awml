@@ -549,9 +549,7 @@ local services = {
         bat_notification_low_preset = beautiful.bat_notification_low_preset,
         bat_notification_critical_preset = beautiful.bat_notification_critical_preset,
     }),
-    require("services.brightness")({
-        theme = beautiful,
-    }),
+    require("services.brightness")(),
     require("services.clock")(),
     require("services.usage.cpu")(),
     require("services.usage.mem")(),

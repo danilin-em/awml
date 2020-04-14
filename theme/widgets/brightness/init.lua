@@ -34,7 +34,7 @@ init = function ( theme )
     }
     function _brightness.update_auto_value( value )
         _brightness.auto_value = value
-        awesome.emit_signal('service:brightness:sync', 'auto', value)
+        awesome.emit_signal('service:brightness:main:sync', 'auto', value)
     end
     function _brightness.update_value( value )
         local set = function ( value )
@@ -61,10 +61,10 @@ init = function ( theme )
             end)
         end
     end
-    awesome.connect_signal('service:brightness:value', function(value)
+    awesome.connect_signal('service:brightness:main:value', function(value)
         _brightness.update_value(value)
     end)
-    awesome.connect_signal('service:brightness:sync>auto', function(value)
+    awesome.connect_signal('service:brightness:main:sync>auto', function(value)
         _brightness.auto_value = value
         _brightness.update_value(false)
     end)

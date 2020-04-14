@@ -1,26 +1,25 @@
--- service_brightness
+-- service brightness
 local awesome = awesome
 
-local awful = require("awful")
+local watch = require("awful.widget.watch")
 
 local default = {
-    theme = {},
-    settings = {
-        timeout = 5,
-    },
+    id = 'main',
+    timeout = 5
 }
 
 return function ( args )
-    local theme = args.theme or default.theme
-    local settings = args.settings or default.settings
-    -- Defaults
-    settings.timeout = settings.timeout or default.settings.timeout
-    -- Watcher
-    awful.widget.watch("xbacklight -get", settings.timeout, function(_, stdout)
+    args = args or {}
+    args.id = tostring(args.id or default.id)
+    args.timeout = tonumber(args.timeout or default.timeout)
+    local signal = 'service:brightness:'..args.id
+    local service = watch("xbacklight -get", args.timeout, function(_, stdout)
         local value = tonumber(stdout) or 0
-        awesome.emit_signal('service:brightness:value', value)
+        awesome.emit_signal(signal..':value', value)
     end)
-    awesome.connect_signal('service:brightness:sync', function(name, value)
-        awesome.emit_signal('service:brightness:sync>'..tostring(name), value)
+    awesome.connect_signal(signal..':sync', function(name, value)
+        awesome.emit_signal(signal..':sync>'..tostring(name), value)
     end)
+    awesome.emit_signal(signal..':init', service)
+    return service
 end
