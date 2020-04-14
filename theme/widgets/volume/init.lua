@@ -22,38 +22,36 @@ init = function ( theme )
         start_angle = 0.5 * math.pi,
         widget = wibox.container.arcchart,
     }
-    theme.volume = lain.widget.alsa({
-        settings = function()
-            _value = volume_now
-            _widget.value = volume_now.level
-            if volume_now.status == "off" then
-                _icon:set_image(theme.widget_vol_mute)
-                _widget.colors = {'#DDDDFF'}
-            else
-                _icon:set_image(theme.widget_vol)
-                _widget.colors = {'#ffffff'}
-            end
+    awesome.connect_signal('service:volume:alsa:main:value', function ( volume_now )
+        _value = volume_now
+        _widget.value = volume_now.level
+        if volume_now.status == "off" then
+            _icon:set_image(theme.widget_vol_mute)
+            _widget.colors = {'#DDDDFF'}
+        else
+            _icon:set_image(theme.widget_vol)
+            _widget.colors = {'#ffffff'}
         end
-    })
+    end)
     awful.tooltip {
         objects = { _widget },
         align = "bottom_left",
         timer_function = function()
-            return "Volume: " .. _value.status .. " " .. _value.level .. "%"
+            return "Volume: " .. tostring(_value.status) .. " " .. tostring(_value.level) .. "%"
         end,
     }
     _widget:buttons(awful.util.table.join(
         awful.button({}, 1, function ()
              awful.spawn("amixer -D pulse set Master 1+ toggle")
-             theme.volume.update()
+             awesome.emit_signal('service:volume:alsa:main:update')
         end),
         awful.button({}, 4, function ()
             awful.spawn("amixer -D pulse set Master 1%+")
-            theme.volume.update()
+            awesome.emit_signal('service:volume:alsa:main:update')
         end),
         awful.button({}, 5, function ()
             awful.spawn("amixer -D pulse set Master 5%-")
-            theme.volume.update()
+            awesome.emit_signal('service:volume:alsa:main:update')
         end)
     ))
     return _widget
