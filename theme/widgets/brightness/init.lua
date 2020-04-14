@@ -36,13 +36,13 @@ init = function ( theme )
         _brightness.auto_value = value
         awesome.emit_signal('service:brightness:sync', 'auto', value)
     end
-    function _brightness.update_value( )
-        awful.spawn.easy_async('xbacklight -get', function(stdout)
-            local value = tonumber(stdout) or 0
+    function _brightness.update_value( value )
+        local set = function ( value )
             _brightness.value = value
             if _brightness.auto_value then
                 _icon:set_image(theme.widget_brightness_auto)
                 value = calc_brightness()
+                awful.spawn.easy_async("xbacklight -set "..value, function (stdout) end)
             elseif value <= 30 then
                 _icon:set_image(theme.widget_brightness_low)
             elseif value <= 60 then
@@ -50,37 +50,40 @@ init = function ( theme )
             else
                 _icon:set_image(theme.widget_brightness_high)
             end
-        end)
-    end
-    awesome.connect_signal('service:brightness:value', function(value)
-        if _brightness.auto_value then
-            value = calc_brightness()
-            awful.spawn.easy_async("xbacklight -set "..value, _brightness.update_value)
-        end
-        if value then
             _brightness.value = value
         end
+        if value then
+            set(value)
+        else
+            awful.spawn.easy_async('xbacklight -get', function(stdout)
+                local value = tonumber(stdout) or 0
+                set(value)
+            end)
+        end
+    end
+    awesome.connect_signal('service:brightness:value', function(value)
+        _brightness.update_value(value)
     end)
     awesome.connect_signal('service:brightness:sync>auto', function(value)
         _brightness.auto_value = value
-        _brightness.update_value()
+        _brightness.update_value(false)
     end)
     _brightness:buttons(awful.util.table.join(
         awful.button({}, 1, function ()
-            local value = 50
             _brightness.update_auto_value(not _brightness.auto_value)
-            if _brightness.auto_value then
-                value = calc_brightness()
-            end
-            awful.spawn.easy_async("xbacklight -set "..value, _brightness.update_value)
+            _brightness.update_value(false)
         end),
         awful.button({}, 4, function ()
             _brightness.update_auto_value(false)
-            awful.spawn.easy_async("xbacklight -inc 5", _brightness.update_value)
+            awful.spawn.easy_async("xbacklight -inc 5", function (stdout) 
+                _brightness.update_value(false)
+            end)
         end),
         awful.button({}, 5, function ()
             _brightness.update_auto_value(false)
-            awful.spawn.easy_async("xbacklight -dec 5", _brightness.update_value)
+            awful.spawn.easy_async("xbacklight -dec 5", function (stdout) 
+                _brightness.update_value(false)
+            end)
         end)
     ))
     return _brightness
