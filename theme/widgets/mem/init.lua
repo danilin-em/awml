@@ -2,8 +2,6 @@
 -- Memory Usage
 local wibox = require("wibox")
 local awful = require("awful")
-local lain = require("lain")
-local markup = lain.util.markup
 
 local color = function ( perc )
     local hex = '#ffffff'
@@ -57,19 +55,15 @@ init = function ( theme )
                 .. "Memory percentage: ".. _value.perc .. "%"
         end,
     }
-    lain.widget.cpu({
-        settings = function()
-            _cpu.value = cpu_now.usage
-            _cpu.colors = {color(cpu_now.usage)}
-        end
-    })
-    lain.widget.mem({
-        settings = function()
-            _value = mem_now
-            _mem.value = mem_now.perc
-            _mem.colors = {color(mem_now.perc)}
-        end
-    })
+    awesome.connect_signal('service:usage:cpu:value', function ( cpu_now )
+        _cpu.value = cpu_now.usage
+        _cpu.colors = {color(cpu_now.usage)}
+    end)
+    awesome.connect_signal('service:usage:mem:value', function ( mem_now )
+        _value = mem_now
+        _mem.value = mem_now.perc
+        _mem.colors = {color(mem_now.perc)}
+    end)
     return _mem
 end
 

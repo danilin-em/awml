@@ -550,4 +550,6 @@ local services = {
     require("services.clock")({
         theme = beautiful,
     }),
+    require("services.usage.cpu")(),
+    require("services.usage.mem")(),
 }
