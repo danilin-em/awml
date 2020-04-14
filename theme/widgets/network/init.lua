@@ -31,28 +31,23 @@ init = function ( theme )
             return _value
         end,
     }
-    lain.widget.net {
-        notify = "off",
-        wifi_state = "on",
-        eth_state = "on",
-        settings = function()
-            _widget.visible = true
-            local eth0 = net_now.devices.eth0
-            if eth0 then
-                if eth0.ethernet then
-                    -- TODO: Wired icon
-                end
-            end
-            local wlan0 = net_now.devices.wlp2s0
-            if wlan0 then
-                if wlan0.wifi then
-                    _value = wlan0.signal .. " dBm"
-                    _widget.value = 0 - wlan0.signal
-                    _icon:set_image(theme.widget_net_wifi)
-                end
+    awesome.connect_signal('service:network:value', function ( net_now )
+        _widget.visible = true
+        local eth0 = net_now.devices.eth0
+        if eth0 then
+            if eth0.ethernet then
+                -- TODO: Wired icon
             end
         end
-    }
+        local wlan0 = net_now.devices.wlp2s0
+        if wlan0 then
+            if wlan0.wifi then
+                _value = wlan0.signal .. " dBm"
+                _widget.value = 0 - wlan0.signal
+                _icon:set_image(theme.widget_net_wifi)
+            end
+        end
+    end)
     return _widget
 end
 

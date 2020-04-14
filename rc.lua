@@ -550,4 +550,5 @@ local services = {
     require("services.clock")(),
     require("services.usage.cpu")(),
     require("services.usage.mem")(),
+    require("services.network")(),
 }
