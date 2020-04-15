@@ -261,7 +261,7 @@ globalkeys = my_table.join(
     awful.key({ modkey }, "Return", function () awful.spawn(terminal) end,
         {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey }, "d", function ()
-            os.execute("rofi -show-icons true -combi-modi drun -show combi -modi combi")
+            awful.spawn.easy_async_with_shell("rofi -show-icons true -combi-modi drun -show combi -modi combi", function(_) end)
         end,
         {description = "show rofi", group = "launcher"}),
     -- }}}
