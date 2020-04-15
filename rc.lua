@@ -64,6 +64,7 @@ local services = {
         eth_state = "on",
     }),
     volume_alsa = require("services.volume.alsa")(),
+    screen = require("services.screen")(),
 }
 -- }}}
 
