@@ -187,8 +187,6 @@ local function factory(args)
         -- notifications for critical, low, and full levels
         n_perc.crit = n_perc[1] or n_perc.crit
         n_perc.low = n_perc[2] or n_perc.low
-        bat_now.status = "Discharging"
-        bat_now.perc = n_perc.crit
         if notify == "on" then
             if bat_now.status == "Discharging" then
                 if tonumber(bat_now.perc) <= n_perc.crit then
