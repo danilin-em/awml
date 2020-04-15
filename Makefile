@@ -2,6 +2,8 @@ all:
 
 Xephyr:
 	Xephyr -ac -nolisten tcp -br -noreset -screen 1600x884 :1
+linter:
+	luacheck rc.lua lib services theme
 syntax:
 	awesome -k -c rc.lua
 rundev: syntax

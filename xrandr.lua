@@ -9,20 +9,20 @@ local icon_path = ""
 
 -- Get active outputs
 local function outputs()
-   local outputs = {}
+   local _outputs = {}
    local xrandr = io.popen("xrandr -q --current")
 
    if xrandr then
       for line in xrandr:lines() do
          local output = line:match("^([%w-]+) connected ")
          if output then
-            outputs[#outputs + 1] = output
+            _outputs[#_outputs + 1] = output
                                    end
       end
       xrandr:close()
    end
 
-   return outputs
+   return _outputs
 end
 
 local function arrange(out)
@@ -30,7 +30,7 @@ local function arrange(out)
 
    local choices  = {}
    local previous = { {} }
-   for i = 1, #out do
+   for i = 1, #out do -- luacheck: no unused
       -- Find all permutation of length `i`: we take the permutation
       -- of length `i-1` and for each of them, we create new
       -- permutations by adding each output at the end of it if it is
@@ -52,7 +52,7 @@ end
 
 -- Build available choices
 local function menu()
-   local menu = {}
+   local _menu = {}
    local out = outputs()
    local choices = arrange(out)
 
@@ -82,10 +82,10 @@ local function menu()
          end
       end
 
-      menu[#menu + 1] = { label, cmd }
+      _menu[#_menu + 1] = { label, cmd }
    end
 
-   return menu
+   return _menu
 end
 
 -- Display xrandr notifications from choices
@@ -111,7 +111,7 @@ local function xrandr()
    end
 
    -- Select one and display the appropriate notification
-   local label, action
+   local label
    local next  = state.menu[state.index]
    state.index = state.index + 1
 
@@ -119,7 +119,7 @@ local function xrandr()
       label = "Keep the current configuration"
       state.index = nil
    else
-      label, action = next[1], next[2]
+      label = next[1]
    end
    state.cid = naughty.notify({ text = label,
                                 icon = icon_path,

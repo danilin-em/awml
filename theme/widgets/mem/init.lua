@@ -15,7 +15,7 @@ local color = function ( perc )
     return hex
 end
 
-init = function ( theme )
+return function ( theme )
     theme.widget_mem = theme.dir .. "/widgets/mem/mem.png"
     local _value = {}
     local _icon = wibox.widget.imagebox(theme.widget_mem)
@@ -27,7 +27,6 @@ init = function ( theme )
         thickness = 1,
         border_width = 0,
         bg = theme.bg_normal,
-        border_width = 1,
         border_color = theme.bg_normal,
         colors = {'#ffffff'},
         start_angle = 0.5 * math.pi,
@@ -50,8 +49,8 @@ init = function ( theme )
         objects = { _mem },
         align = "bottom_left",
         timer_function = function()
-            return "Memory used: ".. tostring(_value.used) .. " (MiB)\n" 
-                .. "Swap memory used: ".. tostring(_value.swapused) .. " (MiB)\n" 
+            return "Memory used: ".. tostring(_value.used) .. " (MiB)\n"
+                .. "Swap memory used: ".. tostring(_value.swapused) .. " (MiB)\n"
                 .. "Memory percentage: ".. tostring(_value.perc) .. "%"
         end,
     }
@@ -66,5 +65,3 @@ init = function ( theme )
     end)
     return _mem
 end
-
-return init

@@ -3,8 +3,11 @@
 --]]
 
 -- {{{ Required libraries
-local awesome, client, mouse, screen, tag = awesome, client, mouse, screen, tag
-local ipairs, string, os, table, tostring, tonumber, type = ipairs, string, os, table, tostring, tonumber, type
+local awesome, client, mouse, screen, tag --luacheck: no unused
+    = awesome, client, mouse, screen, tag
+
+local ipairs, string, os, table, tostring, tonumber, type --luacheck: no unused
+    = ipairs, string, os, table, tostring, tonumber, type
 
 local AWESOME_ROOT = os.getenv("AWESOME_ROOT") or os.getenv("HOME") .. "/.config/awesome"
 
@@ -15,7 +18,6 @@ local wibox         = require("wibox")
 local beautiful     = require("beautiful")
 local naughty       = require("naughty")
 local lain          = require("lain")
-local freedesktop   = require("freedesktop")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
                       require("awful.hotkeys_popup.keys")
 local my_table      = awful.util.table or gears.table -- 4.{0,1} compatibility
@@ -87,9 +89,10 @@ run_once({
 local modkey       = "Mod4"
 local altkey       = "Mod1"
 local terminal     = "terminator"
-local vi_focus     = false -- vi-like client focus - https://github.com/lcpz/awesome-copycats/issues/275
-local cycle_prev   = true -- cycle trough all previous client or just the first -- https://github.com/lcpz/awesome-copycats/issues/274
-local editor       = os.getenv("EDITOR") or "vim"
+-- vi-like client focus - https://github.com/lcpz/awesome-copycats/issues/275
+local vi_focus     = false
+-- cycle trough all previous client or just the first -- https://github.com/lcpz/awesome-copycats/issues/274
+local cycle_prev   = true
 local gui_editor   = os.getenv("GUI_EDITOR") or "subl"
 local browser      = os.getenv("BROWSER") or "firefox"
 local scrlocker    = "dm-tool lock"
@@ -212,15 +215,15 @@ root.buttons(my_table.join(
 
 -- {{{ Key bindings
 globalkeys = my_table.join(
-    -- {{{ Awesome Keys group 
+    -- {{{ Awesome Keys group
     awful.key({ modkey }, "s", hotkeys_popup.show_help,
         {description = "show help", group = "awesome"}),
     awful.key({ modkey, "Shift" }, "r", awesome.restart,
         {description = "reload awesome", group = "awesome"}),
-    awful.key({ modkey, "Shift" }, "x", function() xrandr.xrandr() end, 
+    awful.key({ modkey, "Shift" }, "x", function() xrandr.xrandr() end,
         {description = "Setup xrandr", group = "awesome"}),
     -- }}}
-    
+
     -- {{{ Hotkeys Keys group
     awful.key({ modkey }, "l", function () awful.spawn.easy_async_with_shell(scrlocker, function ( _ ) end) end,
         {description = "lock screen", group = "hotkeys"}),
@@ -254,17 +257,17 @@ globalkeys = my_table.join(
     -- {{{ Launcher Keys group
     awful.key({ modkey }, "q", function () awful.spawn(browser) end,
         {description = "run browser", group = "launcher"}),
-    awful.key({ modkey }, "a", function () awful.spawn(guieditor) end,
+    awful.key({ modkey }, "a", function () awful.spawn(gui_editor) end,
         {description = "run gui editor", group = "launcher"}),
     awful.key({ modkey }, "Return", function () awful.spawn(terminal) end,
         {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey }, "d", function ()
-            awful.spawn.easy_async_with_shell("rofi -show-icons true -combi-modi drun -show combi -modi combi", function(_) end)
+            awful.spawn.spawn("rofi -show-icons true -combi-modi drun -show combi -modi combi")
         end,
         {description = "show rofi", group = "launcher"}),
     -- }}}
 
-    -- {{{ Tag Keys group    
+    -- {{{ Tag Keys group
     awful.key({ modkey }, "Up", function () lain.util.tag_view_nonempty(-1) end,
         {description = "view  previous nonempty", group = "tag"}),
     awful.key({ modkey }, "Down", function () lain.util.tag_view_nonempty(1) end,
@@ -279,15 +282,15 @@ globalkeys = my_table.join(
         awful.screen.focus_bydirection("right")
     end, {description = "focus next", group = "screen"}),
     awful.key({ modkey, "Shift" }, "Left", function ()
-        client.focus:move_to_screen (client.focus.screen.index-1) 
+        client.focus:move_to_screen (client.focus.screen.index-1)
     end, {description = "move client to previous screen", group = "screen"}),
     awful.key({ modkey, "Shift" }, "Right", function ()
-        client.focus:move_to_screen (client.focus.screen.index+1) 
+        client.focus:move_to_screen (client.focus.screen.index+1)
     end, {description = "move client to next", group = "screen"})
     -- }}}
 )
 
--- {{{ Client Keys group    
+-- {{{ Client Keys group
 clientkeys = my_table.join(
     awful.key({ modkey }, "Tab",
         function (c)
@@ -324,7 +327,7 @@ clientkeys = my_table.join(
 -- This should map on the top row of your keyboard, usually 1 to 9.
 for i = 1, 9 do
     -- Hack to only show tags 1 and 9 in the shortcut window (mod+s)
-    local descr_view, descr_toggle, descr_move, descr_toggle_focus
+    local descr_view, descr_toggle, descr_move
     if i == 1 or i == 9 then
         descr_view = {description = "view tag #", group = "tag"}
         descr_toggle = {description = "toggle tag #", group = "tag"}
@@ -334,20 +337,20 @@ for i = 1, 9 do
         -- View tag only.
         awful.key({ modkey }, "#" .. i + 9,
                   function ()
-                        local screen = awful.screen.focused()
-                        local tag = screen.tags[i]
-                        if tag then
-                           tag:view_only()
+                        local curr_screen = awful.screen.focused()
+                        local curr_tag = curr_screen.tags[i]
+                        if curr_tag then
+                           curr_tag:view_only()
                         end
                   end,
                   descr_view),
         -- Toggle tag display.
         awful.key({ modkey, "Control" }, "#" .. i + 9,
                   function ()
-                      local screen = awful.screen.focused()
-                      local tag = screen.tags[i]
-                      if tag then
-                         awful.tag.viewtoggle(tag)
+                      local curr_screen = awful.screen.focused()
+                      local curr_tag = curr_screen.tags[i]
+                      if curr_tag then
+                         awful.tag.viewtoggle(curr_tag)
                       end
                   end,
                   descr_toggle),
@@ -355,9 +358,9 @@ for i = 1, 9 do
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
                   function ()
                       if client.focus then
-                          local tag = client.focus.screen.tags[i]
-                          if tag then
-                              client.focus:move_to_tag(tag)
+                          local curr_tag = client.focus.screen.tags[i]
+                          if curr_tag then
+                              client.focus:move_to_tag(curr_tag)
                           end
                      end
                   end,
@@ -415,19 +418,19 @@ awful.rules.rules = {
     { rule = { class = "Gimp", role = "gimp-image-window" },
           properties = { maximized = true } },
     -- floating
-    { rule_any = { 
-            class = { 
+    { rule_any = {
+            class = {
                 "Blueman-manager",
                 "emustudio-main-Main",
                 "gcr-prompter", "Gcr-prompter",
                 "gnome-calculator", "Gnome-calculator",
-            }, 
-            name = { 
+            },
+            name = {
                 "Picture in picture",
                 "Execute File",
                 "Open Folder",
-            } 
-        }, 
+            },
+        },
         properties = { floating = true },
         callback = function (c)
             awful.placement.centered(c,nil)
@@ -435,17 +438,17 @@ awful.rules.rules = {
     },
     -- JetBrains: Sub menu floating
     { rule_any = {
-        instance = { 
-            "jetbrains-webstorm", 
-            "jetbrains-goland", 
+        instance = {
+            "jetbrains-webstorm",
+            "jetbrains-goland",
             "jetbrains-idea",
             "jetbrains-phpstorm",
             "jetbrains-pycharm-ce",
             "jetbrains-pycharm",
             "jetbrains-rubymine",
         }, },
-        properties = { 
-            floating = true, 
+        properties = {
+            floating = true,
             titlebars_enabled = false,
         },
         callback = function (c)
@@ -455,7 +458,7 @@ awful.rules.rules = {
         end
     },
     -- pcmanfm
-    { rule = { class = "pcmanfm", name = "Copying files" }, 
+    { rule = { class = "pcmanfm", name = "Copying files" },
         properties = { floating = true },
         callback = function (c)
             awful.placement.centered(c,nil)
@@ -546,10 +549,10 @@ client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", {raise = vi_focus})
 end)
 
-client.connect_signal("focus", function(c) 
+client.connect_signal("focus", function(c)
     c.border_color = beautiful.border_focus
 end)
-client.connect_signal("unfocus", function(c) 
+client.connect_signal("unfocus", function(c)
     c.border_color = beautiful.border_normal
 end)
 

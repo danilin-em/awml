@@ -3,7 +3,7 @@
 local awful = require("awful")
 local wibox = require("wibox")
 
-init = function ( theme )
+return function ( theme )
     theme.widget_net_wifi     = theme.dir .. "/widgets/network/icons/wifi.png"
     theme.widget_net_wifi_off = theme.dir .. "/widgets/network/icons/wifi_off.png"
     theme.widget_net_ethernet = theme.dir .. "/widgets/network/icons/ethernet.png"
@@ -35,13 +35,13 @@ init = function ( theme )
                 return name
             end,
         }
-        function widget.update( self, device )
-            if device.wifi then
-                self._private.widget:set_image(theme.widget_net_wifi)
-            elseif device.ethernet then
-                self._private.widget:set_image(theme.widget_net_ethernet)
+        function widget.update( _self, _device )
+            if _device.wifi then
+                _self._private.widget:set_image(theme.widget_net_wifi)
+            elseif _device.ethernet then
+                _self._private.widget:set_image(theme.widget_net_ethernet)
             end
-            self.visible = (device.state == "up")
+            _self.visible = (_device.state == "up")
         end
         self:add(widget)
         return widget
@@ -67,5 +67,3 @@ init = function ( theme )
     end)
     return _devices
 end
-
-return init

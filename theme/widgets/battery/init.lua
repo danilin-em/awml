@@ -19,13 +19,11 @@ local color = function ( perc )
     return hex
 end
 
-init = function ( theme )
+return function ( theme )
     theme.widget_battery_alert = theme.dir .. "/widgets/battery/icons/battery_alert.png"
     theme.widget_battery_charging_full = theme.dir .. "/widgets/battery/icons/battery_charging_full.png"
     theme.widget_battery_std = theme.dir .. "/widgets/battery/icons/battery_std.png"
     theme.widget_battery_unknown = theme.dir .. "/widgets/battery/icons/battery_unknown.png"
-    local _perc_crit = 5
-    local _perc_low = 15
     local _value = {}
     local _icon = wibox.widget.imagebox(theme.widget_battery_unknown)
     local _battery = wibox.widget {
@@ -36,7 +34,6 @@ init = function ( theme )
         thickness = 1,
         border_width = 0,
         bg = theme.bg_normal,
-        border_width = 1,
         border_color = theme.bg_normal,
         colors = {theme._color_white},
         start_angle = 0.5 * math.pi,
@@ -68,5 +65,3 @@ init = function ( theme )
     end)
     return _battery
 end
-
-return init

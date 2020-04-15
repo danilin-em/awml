@@ -13,7 +13,7 @@ return function ( args )
     args.id = tostring(args.id or default.id)
     args.timeout = tonumber(args.timeout or default.timeout)
     local signal = 'service:clock:'..args.id
-    local service = watch("true", args.timeout, function(_, stdout)
+    local service = watch("true", args.timeout, function(_, _)
         local time = os.date("!*t")
         awesome.emit_signal(signal..':time', time)
     end)

@@ -2,11 +2,8 @@
 
 local awful = require("awful")
 local wibox = require("wibox")
-local lain = require("lain")
-local gears = require("gears")
-local dpi   = require("beautiful.xresources").apply_dpi
 
-init = function ( theme, screen )
+return function ( theme, screen )
     theme.widget_power_power_menu = theme.dir .. "/widgets/power/icons/power_menu.png"
     theme.widget_power_power_off = theme.dir .. "/widgets/power/icons/power_off.png"
     theme.widget_power_reload_awesome = theme.dir .. "/widgets/power/icons/reload_awesome.png"
@@ -14,7 +11,7 @@ init = function ( theme, screen )
     theme.widget_power_sleep = theme.dir .. "/widgets/power/icons/sleep.png"
     theme.widget_power_quit_awesome = theme.dir .. "/widgets/power/icons/exit.png"
     theme.widget_power_lock = theme.dir .. "/widgets/power/icons/lock.png"
-    function button( image, buttons )
+    local button = function ( image, buttons )
         local margin = 20
         local background = wibox.container.background(
             wibox.container.margin(wibox.widget.imagebox(image, false), margin, margin, margin, margin)
@@ -94,5 +91,3 @@ init = function ( theme, screen )
     ))
     return _icon
 end
-
-return init

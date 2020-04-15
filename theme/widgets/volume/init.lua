@@ -2,10 +2,8 @@
 
 local awful = require("awful")
 local wibox = require("wibox")
-local lain = require("lain")
-local markup = lain.util.markup
 
-init = function ( theme )
+return function ( theme )
     theme.widget_vol      = theme.dir .. "/widgets/volume/icons/vol.png"
     theme.widget_vol_mute = theme.dir .. "/widgets/volume/icons/vol_mute.png"
     local _value = {}
@@ -53,5 +51,3 @@ init = function ( theme )
     ))
     return _widget
 end
-
-return init

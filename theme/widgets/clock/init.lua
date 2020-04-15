@@ -2,7 +2,7 @@
 local wibox = require("wibox")
 local tooltip = require("awful.tooltip")
 
-init = function ( theme )
+return function ( theme ) -- luacheck: no unused
     -- Textclock
     local textclock = wibox.widget.textclock('%H:%M', 30)
     local _widget = wibox.widget {
@@ -19,4 +19,3 @@ init = function ( theme )
     }
     return _widget
 end
-return init
