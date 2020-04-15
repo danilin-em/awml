@@ -47,6 +47,26 @@ do
 end
 -- }}}
 
+-- {{{ Init Services
+local services = {
+    battery = require("services.battery")({
+        n_perc = { low = 15, crit = 5 },
+        timeout = 5,
+        notify = "on",
+    }),
+    brightness = require("services.brightness")(),
+    clock = require("services.clock")(),
+    usage_cpu = require("services.usage.cpu")(),
+    usage_mem = require("services.usage.mem")(),
+    network = require("services.network")({
+        notify = "on",
+        wifi_state = "on",
+        eth_state = "on",
+    }),
+    volume_alsa = require("services.volume.alsa")(),
+}
+-- }}}
+
 -- {{{ Autostart
 
 -- This function will run once every time Awesome is started
@@ -146,6 +166,11 @@ lain.layout.cascade.tile.ncol          = 2
 beautiful.init(string.format("%s/theme/theme.lua", AWESOME_ROOT))
 -- }}}
 
+-- Add beautiful to Services
+services.battery.bat_notification_charged_preset = beautiful.bat_notification_charged_preset
+services.battery.bat_notification_low_preset = beautiful.bat_notification_low_preset
+services.battery.bat_notification_critical_preset = beautiful.bat_notification_critical_preset
+
 -- {{{ Screen
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", function(s)
@@ -196,34 +221,31 @@ globalkeys = my_table.join(
     -- }}}
     
     -- {{{ Hotkeys Keys group
-    awful.key({ modkey }, "l", function () os.execute(scrlocker) end,
+    awful.key({ modkey }, "l", function () awful.spawn.easy_async_with_shell(scrlocker, function ( _ ) end) end,
         {description = "lock screen", group = "hotkeys"}),
     awful.key({ modkey }, "c", function () awful.spawn.with_shell("xsel | xsel -i -b") end,
         {description = "copy terminal to gtk", group = "hotkeys"}),
     awful.key({ modkey }, "v", function () awful.spawn.with_shell("xsel -b | xsel") end,
         {description = "copy gtk to terminal", group = "hotkeys"}),
-    awful.key({ }, "Print", function() os.execute("flameshot gui") end,
+    awful.key({ }, "Print", function() awful.spawn.easy_async_with_shell("flameshot gui", function ( _ ) end) end,
         {description = "take a screenshot", group = "hotkeys"}),
-    awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 5") end,
+    awful.key({ }, "XF86MonBrightnessUp", function () services.brightness:inc(5) end,
         {description = "+10%", group = "hotkeys"}),
-    awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 5") end,
+    awful.key({ }, "XF86MonBrightnessDown", function () services.brightness:dec(5) end,
         {description = "-10%", group = "hotkeys"}),
     awful.key({ }, "XF86AudioRaiseVolume",
         function ()
-            os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
-            beautiful.volume.update()
+            awesome.emit_signal('service:volume:alsa:main:Raise', 1)
         end,
         {description = "volume up", group = "hotkeys"}),
     awful.key({ }, "XF86AudioLowerVolume",
         function ()
-            os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
-            beautiful.volume.update()
+            awesome.emit_signal('service:volume:alsa:main:Lower', 1)
         end,
         {description = "volume down", group = "hotkeys"}),
     awful.key({ }, "XF86AudioMute",
         function ()
-            os.execute(string.format("amixer -q set %s toggle", beautiful.volume.togglechannel or beautiful.volume.channel))
-            beautiful.volume.update()
+            awesome.emit_signal('service:volume:alsa:main:Mute')
         end,
         {description = "toggle mute", group = "hotkeys"}),
     --}}}
@@ -236,7 +258,7 @@ globalkeys = my_table.join(
     awful.key({ modkey }, "Return", function () awful.spawn(terminal) end,
         {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey }, "d", function ()
-            os.execute("rofi -show-icons true -combi-modi drun -show combi -modi combi")
+            awful.spawn.easy_async_with_shell("rofi -show-icons true -combi-modi drun -show combi -modi combi", function(_) end)
         end,
         {description = "show rofi", group = "launcher"}),
     -- }}}
@@ -538,25 +560,3 @@ client.connect_signal("property::floating", function (c)
     end
 end)
 -- }}}
-
--- Init Services
-local services = {
-    battery = require("services.battery")({
-        n_perc = { low = 15, crit = 5 },
-        timeout = 5,
-        notify = "on",
-        bat_notification_charged_preset = beautiful.bat_notification_charged_preset,
-        bat_notification_low_preset = beautiful.bat_notification_low_preset,
-        bat_notification_critical_preset = beautiful.bat_notification_critical_preset,
-    }),
-    require("services.brightness")(),
-    require("services.clock")(),
-    require("services.usage.cpu")(),
-    require("services.usage.mem")(),
-    require("services.network")({
-        notify = "on",
-        wifi_state = "on",
-        eth_state = "on",
-    }),
-    require("services.volume.alsa")(),
-}

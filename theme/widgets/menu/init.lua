@@ -12,7 +12,7 @@ local init = function ( theme )
     }
     _widget:buttons(awful.util.table.join(
         awful.button({ }, 1, function ()
-            os.execute("rofi -show-icons true -combi-modi drun -show combi -modi combi")
+            awful.spawn.easy_async_with_shell("rofi -show-icons true -combi-modi drun -show combi -modi combi", function(_) end)
         end)
     ))
     return _widget
