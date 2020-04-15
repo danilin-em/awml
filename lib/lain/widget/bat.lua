@@ -19,22 +19,21 @@ local tonumber = tonumber
 -- lain.widget.bat
 
 local function factory(args)
-    local pspath = args.pspath or "/sys/class/power_supply/"
+    local _args       = args or {}
+    local pspath      = _args.pspath or "/sys/class/power_supply/"
+    local bat         = { widget = wibox.widget.textbox() }
+    local timeout     = _args.timeout or 30
+    local notify      = _args.notify or "on"
+    local full_notify = _args.full_notify or notify
+    local n_perc      = _args.n_perc or { 5, 15 }
+    local batteries   = _args.batteries or (_args.battery and {_args.battery}) or {}
+    local ac          = _args.ac or "AC0"
+    local settings    = _args.settings or function() end
 
     if not fs.is_dir(pspath) then
         naughty.notify { text = "lain.widget.bat: invalid power supply path", timeout = 0 }
         return
     end
-
-    local bat         = { widget = wibox.widget.textbox() }
-    local args        = args or {}
-    local timeout     = args.timeout or 30
-    local notify      = args.notify or "on"
-    local full_notify = args.full_notify or notify
-    local n_perc      = args.n_perc or { 5, 15 }
-    local batteries   = args.batteries or (args.battery and {args.battery}) or {}
-    local ac          = args.ac or "AC0"
-    local settings    = args.settings or function() end
 
     function bat.get_batteries()
         helpers.line_callback("ls -1 " .. pspath, function(line)
@@ -49,7 +48,7 @@ local function factory(args)
 
     if #batteries == 0 then bat.get_batteries() end
 
-    bat.bat_notification_critical_preset = args.bat_notification_critical_preset or {
+    bat.bat_notification_critical_preset = _args.bat_notification_critical_preset or {
         title   = "Battery exhausted",
         text    = "Shutdown imminent",
         timeout = 15,
@@ -57,7 +56,7 @@ local function factory(args)
         bg      = "#FFFFFF"
     }
 
-    bat.bat_notification_low_preset = args.bat_notification_low_preset or {
+    bat.bat_notification_low_preset = _args.bat_notification_low_preset or {
         title   = "Battery low",
         text    = "Plug the cable!",
         timeout = 15,
@@ -65,7 +64,7 @@ local function factory(args)
         bg      = "#CDCDCD"
     }
 
-    bat.bat_notification_charged_preset = args.bat_notification_charged_preset or {
+    bat.bat_notification_charged_preset = _args.bat_notification_charged_preset or {
         title   = "Battery full",
         text    = "You can unplug the cable",
         timeout = 15,
@@ -73,7 +72,7 @@ local function factory(args)
         bg      = "#CDCDCD"
     }
 
-    bat_now = {
+    local bat_now = {
         status    = "N/A",
         ac_status = "N/A",
         perc      = "N/A",
@@ -164,7 +163,7 @@ local function factory(args)
                     end
 
                     if 0 < rate_time and rate_time < 0.01 then -- check for magnitude discrepancies (#199)
-                        rate_time_magnitude = math.abs(math.floor(math.log10(rate_time)))
+                        local rate_time_magnitude = math.abs(math.floor(math.log10(rate_time)))
                         rate_time = rate_time * 10^(rate_time_magnitude - 2)
                     end
                  end
@@ -181,8 +180,8 @@ local function factory(args)
             end
         end
 
-        widget = bat.widget
-        settings()
+        local _widget = bat.widget
+        settings(bat_now, _widget)
 
         -- notifications for critical, low, and full levels
         n_perc.crit = n_perc[1] or n_perc.crit
