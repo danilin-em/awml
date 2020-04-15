@@ -49,7 +49,7 @@ local function factory(args)
 
     if #batteries == 0 then bat.get_batteries() end
 
-    bat_notification_critical_preset = args.bat_notification_critical_preset or {
+    bat.bat_notification_critical_preset = args.bat_notification_critical_preset or {
         title   = "Battery exhausted",
         text    = "Shutdown imminent",
         timeout = 15,
@@ -57,7 +57,7 @@ local function factory(args)
         bg      = "#FFFFFF"
     }
 
-    bat_notification_low_preset = args.bat_notification_low_preset or {
+    bat.bat_notification_low_preset = args.bat_notification_low_preset or {
         title   = "Battery low",
         text    = "Plug the cable!",
         timeout = 15,
@@ -65,7 +65,7 @@ local function factory(args)
         bg      = "#CDCDCD"
     }
 
-    bat_notification_charged_preset = args.bat_notification_charged_preset or {
+    bat.bat_notification_charged_preset = args.bat_notification_charged_preset or {
         title   = "Battery full",
         text    = "You can unplug the cable",
         timeout = 15,
@@ -187,23 +187,25 @@ local function factory(args)
         -- notifications for critical, low, and full levels
         n_perc.crit = n_perc[1] or n_perc.crit
         n_perc.low = n_perc[2] or n_perc.low
+        bat_now.status = "Discharging"
+        bat_now.perc = n_perc.crit
         if notify == "on" then
             if bat_now.status == "Discharging" then
                 if tonumber(bat_now.perc) <= n_perc.crit then
                     bat.id = naughty.notify({
-                        preset = bat_notification_critical_preset,
+                        preset = bat.bat_notification_critical_preset,
                         replaces_id = bat.id
                     }).id
                 elseif tonumber(bat_now.perc) <= n_perc.low then
                     bat.id = naughty.notify({
-                        preset = bat_notification_low_preset,
+                        preset = bat.bat_notification_low_preset,
                         replaces_id = bat.id
                     }).id
                 end
                 fullnotification = false
             elseif bat_now.status == "Full" and full_notify == "on" and not fullnotification then
                 bat.id = naughty.notify({
-                    preset = bat_notification_charged_preset,
+                    preset = bat.bat_notification_charged_preset,
                     replaces_id = bat.id
                 }).id
                 fullnotification = true
