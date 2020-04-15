@@ -221,13 +221,13 @@ globalkeys = my_table.join(
     -- }}}
     
     -- {{{ Hotkeys Keys group
-    awful.key({ modkey }, "l", function () os.execute(scrlocker) end,
+    awful.key({ modkey }, "l", function () awful.spawn.easy_async_with_shell(scrlocker, function ( _ ) end) end,
         {description = "lock screen", group = "hotkeys"}),
     awful.key({ modkey }, "c", function () awful.spawn.with_shell("xsel | xsel -i -b") end,
         {description = "copy terminal to gtk", group = "hotkeys"}),
     awful.key({ modkey }, "v", function () awful.spawn.with_shell("xsel -b | xsel") end,
         {description = "copy gtk to terminal", group = "hotkeys"}),
-    awful.key({ }, "Print", function() os.execute("flameshot gui") end,
+    awful.key({ }, "Print", function() awful.spawn.easy_async_with_shell("flameshot gui", function ( _ ) end) end,
         {description = "take a screenshot", group = "hotkeys"}),
     awful.key({ }, "XF86MonBrightnessUp", function () services.brightness:inc(5) end,
         {description = "+10%", group = "hotkeys"}),
