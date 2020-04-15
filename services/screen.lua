@@ -21,12 +21,13 @@ return function ( args )
         end),
     }
     function service.auto( self )
-      easy_async("xrandr --auto", function ( stdout )
-        -- body
-      end)
+        easy_async("xrandr --auto", function ( stdout )
+            -- body
+        end)
     end
     -- Connect Signals
     awesome.connect_signal(signal..':watch', function(value)
+        awesome.emit_signal(signal..':auto')
         -- body
     end)
     awesome.connect_signal(signal..':auto', function(value)
