@@ -16,7 +16,7 @@ local update_icon = function ( theme )
     end
 end
 
-init = function ( theme )
+return function ( theme )
     theme.widget_keyboardlayout_ru = theme.dir .. "/widgets/keyboardlayout/icons/indicator-keyboard-Ru.svg"
     theme.widget_keyboardlayout_en = theme.dir .. "/widgets/keyboardlayout/icons/indicator-keyboard-En.svg"
     update_icon(theme)
@@ -37,5 +37,3 @@ init = function ( theme )
     end);
     return _widget
 end
-
-return init
