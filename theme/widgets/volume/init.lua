@@ -42,16 +42,13 @@ init = function ( theme )
     }
     _widget:buttons(awful.util.table.join(
         awful.button({}, 1, function ()
-             awful.spawn("amixer -D pulse set Master 1+ toggle")
-             awesome.emit_signal('service:volume:alsa:main:update')
+             awesome.emit_signal('service:volume:alsa:main:Mute')
         end),
         awful.button({}, 4, function ()
-            awful.spawn("amixer -D pulse set Master 1%+")
-            awesome.emit_signal('service:volume:alsa:main:update')
+            awesome.emit_signal('service:volume:alsa:main:Raise', 1)
         end),
         awful.button({}, 5, function ()
-            awful.spawn("amixer -D pulse set Master 5%-")
-            awesome.emit_signal('service:volume:alsa:main:update')
+            awesome.emit_signal('service:volume:alsa:main:Lower', 5)
         end)
     ))
     return _widget

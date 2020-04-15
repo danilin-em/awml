@@ -235,20 +235,17 @@ globalkeys = my_table.join(
         {description = "-10%", group = "hotkeys"}),
     awful.key({ }, "XF86AudioRaiseVolume",
         function ()
-            os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
-            beautiful.volume.update()
+            awesome.emit_signal('service:volume:alsa:main:Raise', 1)
         end,
         {description = "volume up", group = "hotkeys"}),
     awful.key({ }, "XF86AudioLowerVolume",
         function ()
-            os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
-            beautiful.volume.update()
+            awesome.emit_signal('service:volume:alsa:main:Lower', 1)
         end,
         {description = "volume down", group = "hotkeys"}),
     awful.key({ }, "XF86AudioMute",
         function ()
-            os.execute(string.format("amixer -q set %s toggle", beautiful.volume.togglechannel or beautiful.volume.channel))
-            beautiful.volume.update()
+            awesome.emit_signal('service:volume:alsa:main:Mute')
         end,
         {description = "toggle mute", group = "hotkeys"}),
     --}}}
