@@ -3,7 +3,6 @@ local awesome = awesome
 
 local watch = require("awful.widget.watch")
 local easy_async = require("awful.spawn").easy_async
-local dump = require("gears.debug").dump
 
 local default = {
     id = 'main',
@@ -32,8 +31,8 @@ return function ( args )
         auto = false,
         value = 100,
     }
-    function service.cmd( self, args )
-        easy_async('xbacklight '.. tostring(args), function(stdout)
+    function service.cmd( self, cmd )
+        easy_async('xbacklight '.. tostring(cmd), function(_)
             easy_async('xbacklight -get', function(stdout)
                 self.value = tonumber(stdout) or 100
                 awesome.emit_signal(signal..':props', {

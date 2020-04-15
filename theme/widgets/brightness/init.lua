@@ -4,7 +4,7 @@ local awesome = awesome
 local awful = require("awful")
 local wibox = require("wibox")
 
-init = function ( theme )
+return function ( theme )
     theme.widget_brightness_auto = theme.dir .. "/widgets/brightness/icons/brightness_auto.png"
     theme.widget_brightness_high = theme.dir .. "/widgets/brightness/icons/brightness_high.png"
     theme.widget_brightness_medium = theme.dir .. "/widgets/brightness/icons/brightness_medium.png"
@@ -50,6 +50,3 @@ init = function ( theme )
     ))
     return _brightness
 end
-
-return init
-
