@@ -28,5 +28,21 @@ globals = {
     "root",
     "client"
 }
+files["services/usage/*.lua"] = {
+    read_globals = {
+        "cpu_now",
+        "mem_now",
+    },
+}
+files["services/volume/alsa.lua"] = {
+    read_globals = {
+        "volume_now",
+    },
+}
+files["services/*.lua"] = {
+    read_globals = {
+        "net_now",
+    },
+}
 
 -- cache = true
