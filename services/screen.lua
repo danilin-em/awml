@@ -16,21 +16,21 @@ return function ( args )
     local signal = 'service:screen:'..args.id
     -- Service
     local service = {
-        widget = watch("xrandr -q --current", args.timeout, function(_, stdout)
+        widget = watch("xrandr -q --current", args.timeout, function(_, _)
             awesome.emit_signal(signal..':watch', nil)
         end),
     }
-    function service.auto( self )
-        easy_async("xrandr --auto", function ( stdout )
+    function service.auto( )
+        easy_async("xrandr --auto", function ( _ )
             -- body
         end)
     end
     -- Connect Signals
-    awesome.connect_signal(signal..':watch', function(value)
+    awesome.connect_signal(signal..':watch', function()
         awesome.emit_signal(signal..':auto')
         -- body
     end)
-    awesome.connect_signal(signal..':auto', function(value)
+    awesome.connect_signal(signal..':auto', function()
         -- body
         service:auto()
     end)
