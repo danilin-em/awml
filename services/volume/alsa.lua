@@ -31,7 +31,7 @@ return function ( args )
         end)
     end
     function service.Mute ( self )
-        local cmd = string.format("amixer -q set %s toggle", self.togglechannel or self.channel)
+        local cmd = string.format("amixer -D pulse set %s 1+ toggle", self.togglechannel or self.channel)
         easy_async_with_shell(cmd, function(_)
             self.update()
         end)
