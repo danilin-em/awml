@@ -53,9 +53,6 @@ local services = {
         n_perc = { low = 15, crit = 5 },
         timeout = 5,
         notify = "on",
-        bat_notification_charged_preset = beautiful.bat_notification_charged_preset,
-        bat_notification_low_preset = beautiful.bat_notification_low_preset,
-        bat_notification_critical_preset = beautiful.bat_notification_critical_preset,
     }),
     brightness = require("services.brightness")(),
     clock = require("services.clock")(),
@@ -168,6 +165,11 @@ lain.layout.cascade.tile.ncol          = 2
 
 beautiful.init(string.format("%s/theme/theme.lua", AWESOME_ROOT))
 -- }}}
+
+-- Add beautiful to Services
+services.battery.bat_notification_charged_preset = beautiful.bat_notification_charged_preset
+services.battery.bat_notification_low_preset = beautiful.bat_notification_low_preset
+services.battery.bat_notification_critical_preset = beautiful.bat_notification_critical_preset
 
 -- {{{ Screen
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
