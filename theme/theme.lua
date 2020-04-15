@@ -1,9 +1,12 @@
 --[[
-
-     Powerarrow Dark Awesome WM theme
-     github.com/lcpz
-
+    Powerarrow Dark Awesome WM theme
+    github.com/lcpz
 --]]
+local awesome, client, mouse, screen, tag --luacheck: no unused
+    = awesome, client, mouse, screen, tag
+
+local ipairs, string, os, table, tostring, tonumber, type --luacheck: no unused
+    = ipairs, string, os, table, tostring, tonumber, type
 
 local gears = require("gears")
 local lain  = require("lain")
@@ -11,8 +14,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
 
-local awesome, client, mouse, screen, tag = awesome, client, mouse, screen, tag
-local os = os
+
 local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
 local AWESOME_ROOT = os.getenv("AWESOME_ROOT") or os.getenv("HOME") .. "/.config/awesome"
@@ -89,27 +91,24 @@ theme.bat_notification_charged_preset = {
     title = "Battery full",
     text = "You can unplug the cable",
     timeout = 5,
-    fg = theme.fg_normal or default.theme.fg_normal,
-    bg = theme.bg_normal or default.theme.bg_normal, 
+    fg = theme.fg_normal,
+    bg = theme.bg_normal,
 }
 theme.bat_notification_low_preset = {
     title = "Battery low",
     text = "Plug the cable!",
     timeout = 30,
-    fg = theme.fg_normal or default.theme.fg_normal ,
-    bg = theme.bg_warn or default.theme.bg_warn 
+    fg = theme.fg_normal,
+    bg = theme.bg_warn,
 }
 theme.bat_notification_critical_preset = {
     title = "Battery exhausted",
     text = "Shutdown imminent",
     timeout = 0,
-    fg = theme.fg_normal or default.theme.fg_normal ,
-    bg = theme.bg_critical or default.theme.bg_critical 
+    fg = theme.fg_normal,
+    bg = theme.bg_critical,
 }
 -- }}
-
--- Separators
-local spr = wibox.widget.textbox(' ')
 
 function theme.at_screen_connect(s)
     -- Quake application
@@ -182,7 +181,13 @@ function theme.at_screen_connect(s)
     }
 
     -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s, height = dpi(18), bg = theme.bg_normal, fg = theme.fg_normal })
+    s.mywibox = awful.wibar({
+        position = "top",
+        screen = s,
+        height = dpi(18),
+        bg = theme.bg_normal,
+        fg = theme.fg_normal,
+    })
 
     -- Add widgets to the wibox
     s.mywibox:setup {
