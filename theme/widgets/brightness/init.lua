@@ -24,7 +24,7 @@ init = function ( theme )
     }
     function _brightness.update( self, props )
         self.value = props.value
-        if props:is_auto() then
+        if props.auto then
             self._private.widget:set_image(theme.widget_brightness_auto)
         elseif props.value <= 30 then
             self._private.widget:set_image(theme.widget_brightness_low)

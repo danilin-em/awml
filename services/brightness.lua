@@ -33,11 +33,13 @@ return function ( args )
         value = 100,
     }
     function service.cmd( self, args )
-        self:set_auto(false)
         easy_async('xbacklight '.. tostring(args), function(stdout)
             easy_async('xbacklight -get', function(stdout)
                 self.value = tonumber(stdout) or 100
-                awesome.emit_signal(signal..':props', self)
+                awesome.emit_signal(signal..':props', {
+                    value = self.value,
+                    auto = self.auto,
+                })
             end)
         end)
     end
@@ -45,14 +47,16 @@ return function ( args )
         self:cmd('-set '..tostring(value))
     end
     function service.inc( self, value )
+        self:set_auto(false)
         self:cmd('-inc '..tostring(value))
     end
     function service.dec( self, value )
+        self:set_auto(false)
         self:cmd('-dec '..tostring(value))
     end
     function service.set_auto( self, value )
-        awesome.emit_signal(signal..':auto', value)
         self.auto = value
+        awesome.emit_signal(signal..':watch', self.value)
     end
     function service.is_auto( self )
         return self.auto
@@ -62,16 +66,18 @@ return function ( args )
     end
     -- Connect Signals
     awesome.connect_signal(signal..':watch', function(value)
-        if service:is_auto() then
-            awesome.emit_signal(signal..':set', calc_brightness())
-        else
-            service.value = value
-            awesome.emit_signal(signal..':props', service)
+        service.value = value
+        if service.auto then
+            service.value = calc_brightness()
+            service:set(service.value)
         end
+        awesome.emit_signal(signal..':props', {
+            value = service.value,
+            auto = service.auto,
+        })
     end)
     awesome.connect_signal(signal..':auto_toggle', function()
         service:auto_toggle()
-        awesome.emit_signal(signal..':props', service)
     end)
     awesome.connect_signal(signal..':set', function(value)
         service:set(value)
