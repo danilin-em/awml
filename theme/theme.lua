@@ -207,6 +207,7 @@ function theme.at_screen_connect(s)
         { -- Right widgets
             spacing = dpi(5),
             layout = wibox.layout.fixed.horizontal,
+            require('theme.widgets.pomodoro')(theme),
             wibox.widget.systray(),
             require('theme.widgets.keyboardlayout')(theme),
             require('theme.widgets.volume')(theme),
