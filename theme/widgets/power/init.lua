@@ -72,7 +72,8 @@ return function ( theme, screen )
         id = 'popup',
         ontop = true,
         opacity = 0.5,
-        x = 0, y = 0,
+        x = screen.geometry.x,
+        y = screen.geometry.y,
         width = screen.geometry.width,
         height = screen.geometry.height,
         visible = false,
@@ -81,7 +82,7 @@ return function ( theme, screen )
     }
     _icon:buttons(awful.util.table.join(
         awful.button({}, 1, function ( )
-            _popup.visible = not _popup.visible
+            awesome.emit_signal('service:power:main:popup', true)
         end)
     ))
     _icon:connect_signal('mouse::enter', function ( )
@@ -92,14 +93,17 @@ return function ( theme, screen )
     end)
     _popup:buttons(awful.util.table.join(
         awful.button({}, 1, function ( )
-            _popup.visible = false
+            awesome.emit_signal('service:power:main:popup', false)
         end),
         awful.button({}, 3, function ( )
-            _popup.visible = false
+            awesome.emit_signal('service:power:main:popup', false)
         end)
     ))
     if theme.widget_power_popup_use_wallpaper then
         _popup.bgimage = theme.wallpaper
     end
+    awesome.connect_signal('service:power:main:popup', function(visible)
+        _popup.visible = visible
+    end)
     return _icon
 end
