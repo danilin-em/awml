@@ -2,6 +2,7 @@
 
 local awful = require("awful")
 local wibox = require("wibox")
+local gears = require("gears")
 
 return function ( theme, screen )
     theme.widget_power_power_menu = theme.dir .. "/widgets/power/icons/power_menu.png"
@@ -28,6 +29,9 @@ return function ( theme, screen )
             curr.bg = theme.bg_normal
         end)
         background.bg = theme.bg_normal
+        background.shape = gears.shape.rounded_rect
+        background.shape_border_width = 1
+        background.shape_border_color = theme.bg_focus
         background:buttons(buttons)
         return wibox.container.place(background)
     end
