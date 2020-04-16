@@ -40,31 +40,33 @@ return function ( theme, screen )
     local _popup = wibox{
         widget = wibox.widget {
             button('Reload Awesome', theme.widget_power_reload_awesome, awful.util.table.join(
-                awful.button({}, 1, awesome.restart)
+                awful.button({}, 1, function ( )
+                    awesome.emit_signal("service:power:main:action:reload")
+                end)
             )),
             button('Lock', theme.widget_power_lock, awful.util.table.join(
                 awful.button({}, 1, function ( )
-                    awful.spawn.with_shell("dm-tool lock") -- TODO: Use global lock command. Linked by #23
+                    awesome.emit_signal("service:power:main:action:lock")
                 end)
             )),
             button('Quit', theme.widget_power_quit_awesome, awful.util.table.join(
                 awful.button({}, 1, function ( )
-                    awesome.quit()
+                    awesome.emit_signal("service:power:main:action:quit")
                 end)
             )),
             button('Sleep', theme.widget_power_sleep, awful.util.table.join(
                 awful.button({}, 1, function ( )
-                    awful.spawn.with_shell("systemctl suspend") -- TODO: Store this actions in to Power Service
+                    awesome.emit_signal("service:power:main:action:suspend")
                 end)
             )),
             button('Restart', theme.widget_power_restart, awful.util.table.join(
                 awful.button({}, 1, function ( )
-                    awful.spawn.with_shell("systemctl reboot") -- TODO: Store this actions in to Power Service
+                    awesome.emit_signal("service:power:main:action:reboot")
                 end)
             )),
             button('Power Off', theme.widget_power_power_off, awful.util.table.join(
                 awful.button({}, 1, function ( )
-                    awful.spawn.with_shell("systemctl poweroff") -- TODO: Store this actions in to Power Service
+                    awesome.emit_signal("service:power:main:action:poweroff")
                 end)
             )),
             layout = wibox.layout.flex.horizontal,
