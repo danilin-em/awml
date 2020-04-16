@@ -94,5 +94,8 @@ return function ( theme, screen )
             _popup.visible = false
         end)
     ))
+    if theme.widget_power_popup_use_wallpaper then
+        _popup.bgimage = theme.wallpaper
+    end
     return _icon
 end

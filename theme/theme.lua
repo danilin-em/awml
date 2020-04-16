@@ -86,6 +86,9 @@ theme.titlebar_sticky_button_focus_inactive     = theme.dir .. "/icons/titlebar/
 theme.titlebar_sticky_button_normal_active      = theme.dir .. "/icons/titlebar/sticky_normal_active.png"
 theme.titlebar_sticky_button_normal_inactive    = theme.dir .. "/icons/titlebar/sticky_normal_inactive.png"
 
+-- Widgets Settings
+theme.widget_power_popup_use_wallpaper = false
+
 -- Battery notifications
 theme.bat_notification_charged_preset = {
     title = "Battery full",
