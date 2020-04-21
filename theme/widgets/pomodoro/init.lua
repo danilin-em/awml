@@ -3,6 +3,7 @@ local wibox = require("wibox")
 local tooltip = require("awful.tooltip")
 local button = require("awful.button")
 local table_join = require("awful.util").table.join
+local notify = require("naughty").notify
 
 return function ( theme ) -- luacheck: no unused
     theme.widget_pomodoro_timer_stopped = theme.dir .. "/widgets/pomodoro/icons/timer_stopped.png"
@@ -65,10 +66,23 @@ return function ( theme ) -- luacheck: no unused
     function _widget.Start (self)
         self:inc_state()
         _icon:set_state(self:state_name())
+        self:Notify()
     end
     function _widget.Stop (self)
         self:set_state(1)
         _icon:set_state(self:state_name())
+    end
+    function _widget.Notify (self)
+        self.notify_id = notify({
+            preset = theme.widget_pomodoro_notify_preset or {
+                title = "Pomodoro",
+                text = self:state_text(),
+                timeout = 5,
+                fg = theme.fg_normal,
+                bg = theme.bg_normal,
+            },
+            replaces_id = self.notify_id
+        }).id
     end
     tooltip {
         objects = { _widget },
