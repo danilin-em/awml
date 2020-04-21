@@ -32,7 +32,7 @@ return function ( theme ) -- luacheck: no unused
         widget = wibox.container.arcchart,
         -- Props
         states = {
-            stopped = 'Decide on the task to be done. And click me :)',
+            stopped = 'Decide on the task to be done',
             active = 'Work on the task...',
             short_break = 'Take a short break',
             long_break = 'Good job! Take a long break',
