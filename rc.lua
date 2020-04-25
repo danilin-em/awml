@@ -84,6 +84,7 @@ end
 
 run_once({
     "setxkbmap -layout us,ru -option grp:win_space_toggle",
+    "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1",
     -- No Apps
 })
 -- }}}
