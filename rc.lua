@@ -83,8 +83,8 @@ local function run_once(cmd_arr)
 end
 
 run_once({
-    "setxkbmap -layout us,ru -option grp:win_space_toggle",
-    "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1",
+    "setxkbmap -layout us,ru -option grp:win_space_toggle", -- TODO: Create keyboard layouts Wrapper
+    "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1", -- TODO: Create polkit Wrapper
     -- No Apps
 })
 -- }}}
@@ -99,7 +99,6 @@ local vi_focus     = false
 local cycle_prev   = true
 local gui_editor   = os.getenv("GUI_EDITOR") or "subl"
 local browser      = os.getenv("BROWSER") or "firefox"
-local scrlocker    = "dm-tool lock"
 
 awful.util.terminal = terminal
 awful.util.tagnames = { "1", "2", "3", "4" }
@@ -229,7 +228,9 @@ globalkeys = my_table.join(
     -- }}}
 
     -- {{{ Hotkeys Keys group
-    awful.key({ modkey }, "l", function () awful.spawn.easy_async_with_shell(scrlocker, function ( _ ) end) end,
+    awful.key({ modkey }, "l", function ()
+        awesome.emit_signal('service:power:main:action:lock', service)
+    end,
         {description = "lock screen", group = "hotkeys"}),
     awful.key({ modkey }, "c", function () awful.spawn.with_shell("xsel | xsel -i -b") end,
         {description = "copy terminal to gtk", group = "hotkeys"}),
