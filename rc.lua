@@ -68,7 +68,7 @@ local services = {
     volume_alsa = require("services.volume.alsa")(),
     screen = require("services.screen")(),
     power = require("services.power")({
-        cmd_lock = "dm-tool lock",
+        cmd_lock = "false", -- TODO: Create Screen Lock wrapper
     }),
 }
 -- }}}
