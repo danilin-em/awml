@@ -27,8 +27,7 @@ return function ( args )
     end
     -- Connect Signals
     awesome.connect_signal(signal..':watch', function()
-        awesome.emit_signal(signal..':auto')
-        -- body
+        -- TODO: Screen catch (dis)connent event
     end)
     awesome.connect_signal(signal..':auto', function()
         -- body
