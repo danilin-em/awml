@@ -2,6 +2,18 @@
 
 ![Screenshot Main](./doc/2020-04-12_19-43.png)
 
+## Requirements
+
+- terminator
+
+- rofi
+
+- flameshot
+
+- xbacklight / xrandr
+
+- amixer
+
 ## Links
 
 [AwesomeWM DOC](https://awesomewm.org/doc/api/index.html)
