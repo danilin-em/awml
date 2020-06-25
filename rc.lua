@@ -85,7 +85,10 @@ end
 run_once({
     "setxkbmap -layout us,ru -option grp:win_space_toggle", -- TODO: Create keyboard layouts Wrapper
     "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1", -- TODO: Create polkit Wrapper
-    -- No Apps
+    "xinput set-prop 'SynPS/2 Synaptics TouchPad' 'libinput Tapping Enabled' 1", -- TODO: TouchPad Wrapper
+    "autorandr --change --force" -- TODO: Autorandr Service
+    -- Apps
+    "megasync",
 })
 -- }}}
 
