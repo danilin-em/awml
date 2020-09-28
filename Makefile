@@ -1,5 +1,7 @@
-all:
+all: requirements
 
+requirements:
+	git clone git@github.com:lcpz/lain.git
 Xephyr:
 	Xephyr -ac -nolisten tcp -br -noreset -screen 1600x884 :1
 linter:
