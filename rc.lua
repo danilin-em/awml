@@ -232,7 +232,7 @@ globalkeys = my_table.join(
 
     -- {{{ Hotkeys Keys group
     awful.key({ modkey }, "l", function ()
-        awesome.emit_signal('service:power:main:action:lock', service)
+        awesome.emit_signal("service:power:main:action:lock")
     end,
         {description = "lock screen", group = "hotkeys"}),
     awful.key({ modkey }, "c", function () awful.spawn.with_shell("xsel | xsel -i -b") end,
